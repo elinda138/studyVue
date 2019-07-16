@@ -88,3 +88,25 @@
    - e.srcElement(判断当前是点的哪个事件原在执行)&&e.target 判断事件源绑定事件
 ## 安装
 npm install vue axios bootstrap
+
+
+
+## git
+- 1、先从github克隆到本地
+ git clone https://github.com/kong/springcloud.git
+ git clone git@github.com:用户名/项目名.git
+ 
+- 2. 初始化git
+ git init
+
+- 3.添加所有文件
+ git add .
+
+- 4.提交
+ git commit -m " update "
+
+- 5.连接远程仓库
+git remote add origin https://github.com/kong/springcloud.git 
+
+- 6. 把本地项目推送到远程仓库
+  git push -u origin master (初次推送)
