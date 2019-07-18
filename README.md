@@ -109,4 +109,4 @@ npm install vue axios bootstrap
 git remote add origin https://github.com/kong/springcloud.git 
 
 - 6. 把本地项目推送到远程仓库
-  git push -u origin master (初次推送)
+  git push -u origin master (初次推送要加 -u 后面在推送就不用了)
