@@ -1,3 +1,4 @@
+## vue(view)就一套构建用户界面的（渐进式框架）
 ## vue 数据驱动(主要操作数据)
 - 操作dom
 ## JS 数据类型
@@ -53,6 +54,36 @@
 ## 部署
 - 服务器端渲染
 - 打包编译
+
+## 框架和库
+- 框架 vue 拥有完整的解决方案，我们写好人家调用我
+- 库  jquery underscore zepto animate.css   我们调用他
+
+## 渐进式  (渐进增强)
+- vue全家桶 vue.js + vue-router(完成单页面运用) + vuex(组件化开发) + axios(获取数据类ajax)
+- 通过组合 完成一个完整的框架
+
+## 渐进式的理解
+- 声明式渲染 Declarative Rendering（无需关心如何实现,可以用就行）
+- 组件系统Component System （页面庞大，复用性大）
+- 客户端路由Client-side Routing（vue-router）多页开发跳转
+- 大规模状态管理Large Scale State Management（vuex）数据方便管理
+- 构建工具Build System（vue-cli）es6转es5、代码的压缩合并 sass 上线，生产文件，路径前缀  webpact打包工具
+
+## Vue的两个核心点
+- 响应的数据变化（当数据发生改变 -> 试图的自动更新
+  
+- 组合的视图组件（UI页面映射为组件树   划分组件可维护、可复用、可测试）
+
+## MVC（bakbone)单向绑定
+- Model数据模型
+- view视图
+- controller 控制器
+
+## MVVM模式（angular,vue）双向绑定
+- Model数据模型  Plain JavaScript Objects
+- view视图模板  DOM
+- view-Model视图模型   DOM LIsteners和Data Bindings
 
 ## vue 第一天复习
 - 初始化webpack    npm init   npm init -y(可以不用不停的打yes)
