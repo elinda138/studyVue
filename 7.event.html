@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>event</title>
+	
+</head>
+<body>
+<div>
+    <!--所有绑定的方法都是window上的-->
+    <!-- <div onclick="fn()">点我</div> -->
+    <div id="app">
+        <!-- v-on: === @ -->
+        <div @mousedown="fn">点我啊</div>
+        <!-- 如果不传递参数 则不要写括号，会自动传入事件源，如果写括号了要手动传入$event属性 -->
+        <div @mousedown="fa($event,1)">点我啊</div>
+    </div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    // function fn(){
+    //     alert(1);
+    // }
+
+    let vm = new Vue({ //根实例
+        el:'#app',
+        methods:{//methods和data中的数据会全部放到vm上，而且名字不能冲突，冲突会报错，methods中的this指向的都是实例
+            fn(){alert(this.arr)},
+            fa(event,a){console.log(event)}
+        }, 
+        data:{   //都是数据
+            arr:[1,2,3,4,5]
+        }
+    }); 
+
+    
+</script>
+</body>
+</html>
