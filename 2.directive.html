@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>mvvm</title>
+	
+</head>
+<body>
+<div id="app">
+    {{msg}}
+    <!--表单元素 input checkbox textarea radio select-->
+    <!--vue的“指令”directive 只是dom上的行间属性，vue给这类属性赋予一定的意义来实现特殊的功能 所有指令都以 v-开头，value属性默认情况下会被vue忽略掉 selected checked 都没有意义-->
+    <!--v-model会将msg的值赋予输入框，输入框的值改变了会影响数据-->
+    <input type="text" v-model="msg">
+    <!--Object.defineProperty ES5-->
+    <!--v-text ==={{}}  防止{{}}出现在页面上-->
+    <div v-text="msg"></div>
+    <!--v-once 只绑定一次 当数据再次发生变化 也不导致页面刷新-->
+    <div v-once>{{msg}}</div>
+    <!--v-html 把html字符当作html渲染,一定是可以信任的html-->
+    <div v-html="p"></div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({ 
+        el:'#app',   
+        data:{   
+            msg:'yellow', 
+            p:'<p>hello</p>'
+        }
+    }); 
+</script>
+</body>
+</html>

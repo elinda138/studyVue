@@ -72,7 +72,6 @@
 
 ## Vue的两个核心点
 - 响应的数据变化（当数据发生改变 -> 试图的自动更新
-  
 - 组合的视图组件（UI页面映射为组件树   划分组件可维护、可复用、可测试）
 
 ## MVC（bakbone)单向绑定
@@ -81,9 +80,22 @@
 - controller 控制器
 
 ## MVVM模式（angular,vue）双向绑定
-- Model数据模型  Plain JavaScript Objects
+- Model数据模型  Plain JavaScript Objects计划好的js对象
 - view视图模板  DOM
-- view-Model视图模型   DOM LIsteners和Data Bindings
+- view-Model视图模型  （vue) DOM LIsteners和Data Bindings
+
+## Object.defineProperty(es5)的没有替代方案
+- 不支持ie8以下
+
+## 安装vue
+- cdn的方式
+- npm安装 node package manager
+   ```
+   npm init
+   npm init -y
+   npm install vue
+   ```
+   > 初始化会产生一个package.json的文件，文件用来描述项目的依赖，不能用大写 特殊字符 中文,而且不要和安装的包的名字相同
 
 ## vue 第一天复习
 - 初始化webpack    npm init   npm init -y(可以不用不停的打yes)

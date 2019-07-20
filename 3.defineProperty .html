@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>defineProperty</title>
+	
+</head>
+<body>
+    <input type ='text' id='input'>
+<script>
+    //双向绑定的实现原理
+    let obj = {};
+    let temp = {};  //temp代理了obj做事,内部做变量转换用的
+
+    Object.defineProperty(obj,'name',{
+        get(){//取obj的name属性会触发
+            return temp['name'];
+        },
+        set(val){//给obj赋值会触发get方法
+            console.log(val);   
+            temp['name']= val;   //改变temp的结果
+            input.value = val; //将值赋予输入框
+
+        }
+    })
+    input.value = obj.name;  //页面一加载时 会调用get方法
+    input.addEventListener('input',function(){//等待输入框的变化，更改输入框时重新赋值
+        obj.name = this.value; //当值变化时会调用set方法
+    });
+    // Object.defineProperty(obj,'name',{//给obj加了一个name
+    //     configurable:false, //是否可配置是否可删除
+    //     writable:false,//是否可重新赋值
+    //     enumerable:false,//是否可枚举(遍历)
+    //     value:1
+    // })
+    // delete obj.name
+    // obj.name = 10000;
+    // for(key in obj){
+    //     console.log(key);
+    // }
+</script>
+</body>
+</html>

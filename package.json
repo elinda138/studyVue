@@ -14,5 +14,13 @@
   },
   "keywords": [],
   "author": "'xiaoyan'",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elinda138/studyVue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/elinda138/studyVue/issues"
+  },
+  "homepage": "https://github.com/elinda138/studyVue#readme"
 }

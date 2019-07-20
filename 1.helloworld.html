@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>helloworld</title>
+	
+</head>
+<body>
+<div id="app">
+    <!--moustache 小胡子语法 表达式 可以放赋值 取值 三元表达式-->
+    {{msg==='yellow1'?1:0}}
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //以前是操作dom    vue就操作数据
+    //引入vue后会白给你一个Vue构造函数
+    let vm = new Vue({ //vm==viewModel
+        el:'#app',   //告诉vue能管理哪个部分，querySelector
+        data:{   //data中的数据会被vm所代理
+            msg:'yellow' //可以通过vm.msg取到对应的内容
+        }
+    }); // Object.defineProperty
+</script>
+</body>
+</html>
