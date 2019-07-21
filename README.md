@@ -19,9 +19,6 @@
   npm install vue axios bootstrap
 
 
-
-
-
 ## 环境介绍
 - IDE ( webstrom、vscode)
 - Npm (Vue-cli、webpack   cnpm  nvm)
@@ -97,15 +94,30 @@
    ```
    > 初始化会产生一个package.json的文件，文件用来描述项目的依赖，不能用大写 特殊字符 中文,而且不要和安装的包的名字相同
 
-## vue 第一天复习
+## vue 第二天
 - 初始化webpack    npm init   npm init -y(可以不用不停的打yes)
 - vm => viewModel 数据最终都会被vm所代理
 - {{a}}  取值表达式，通过{{}}来进行取值,默认可以不写this，表达式  赋值运算  计算 三元表达式  尽量在{{}}里面少写逻辑 可以用（ computed）
-- 指令：dom元素的行间属性，vue提供了内置的指令，必须v-开头，后面的值均为变量
-   - v-model   （表单元素）忽略掉value,checked,selected,将数据绑定到视图上，视图修改后会影响数据的变化
+
+### 指令
+- dom元素的行间属性，vue提供了内置的指令，必须v-开头，后面的值均为变量
+   - v-model （表单元素）它会忽略掉value,checked,selected,作用是：将数据绑定到视图上，视图修改后会影响数据的变化
+   - v-text 可取代{{}} v-cloak 解决闪烁（块）问题，后期都可以不采用，使用v-cloaks 要加样式
+   - v-once 绑定一次，数据在变化不会导致视图刷新，写在不想刷新的标签上
+   - v-html 将html字符串转化成html
+   - v-for 循环（数组，对象，字符串，数字）
+        ```
+        <div v-for="value in/of 数组"></div>
+        <div v-for="(value,index) in/of 数组"></div>
+        ```
    - checkbox(1、如果是复选框 只有一个复选框的时候，会把此值转化为boolean类型true代表选中2、如果是多个checkbox  要增加value属性并且数据类型是数组) (radio checkbox分组靠的是v-model),checked selected不存在
    - 修饰符 .number .lazy
-   - 按建修饰符 .enter .ctrl .keyCode
+   - 按键盘修饰符 .enter .ctrl .keyCode
+### 事件v-on(@)
+-绑定给dom元素，函数需要定义在methods中，不能和data里的内容重名，this指铅的是实例，不能使用箭头函数，事件源对象如果不写括号，可以自动传入，否则只能传入$event
+```
+<div @事件名="fn"></div>
+```
    - 事件     (冒泡从下到上，捕获从上到下（捕获有限制性）)
         - @事件.shop    .capture.stop阻止事件传播
         ```
@@ -130,7 +142,9 @@
    - jquery once
    - e.srcElement(判断当前是点的哪个事件原在执行)&&e.target 判断事件源绑定事件
 ## 安装
+```
 npm install vue axios bootstrap
+```
 
 
 
@@ -153,3 +167,5 @@ git remote add origin https://github.com/kong/springcloud.git
 
 - 6. 把本地项目推送到远程仓库
   git push -u origin master (初次推送要加 -u 后面在推送就不用了)
+
+##转json JSON.stringify()

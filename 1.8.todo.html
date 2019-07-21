@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>todo</title>
+	
+</head>
+<body>
+<div id="app">
+    <!--modifiers   @keyup.ctrl.enter中的.ctrl.enter为键盘修饰符-->
+    <input type="text" v-model="val" @keyup.ctrl.enter="add">
+    <ul>
+        <li v-for="(a,index) in arr">{{a}}<button @click="remove(index)">删除</button></li>
+    </ul>
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({ //根实例
+        el:'#app',
+        methods:{
+            add(e){
+                this.arr.unshift(this.val);
+                this.val=''; //清空输入框的值    
+            },
+            remove(i){
+                this.arr=this.arr.filter((item,index)=>index!==i)//i为文本框传过来的index,index为数组里的  index==i为true,true则留下，我们要删除则让他们不等。
+            }
+        },
+        data:{   
+            arr:[],
+            val:'',
+        }
+    }); 
+
+    
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>聊天(客服版)</title>
+    <style>
+        [v-cloak]{display:none}
+    </style>
+	
+</head>
+<body>
+<div id="app" v-cloak>
+    <select v-model="a" multiple>
+        <option value="" disabled>请选择</option>
+        <option value="1">你好</option>
+        <option value="2">你不好</option>
+        <option value="3">我好</option>
+    </select>{{a}}
+    <!--如果是value属性不写默认取的是option中的值，请选择这一项要加disabled-->
+    <!--如果select是多选择 则数据类型要是数组类型-->
+    <input type="radio" v-model="gender" value="男">男
+    <input type="radio" v-model="gender" value="女">女
+    {{gender}}
+    <!--radio 是通过v-model进行分组的，value值对应的就是选择后的结果-->
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            a:[],
+            gender:''
+        }
+    })
+</script>
+</body>
+</html>
