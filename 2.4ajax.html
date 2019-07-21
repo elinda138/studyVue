@@ -13,18 +13,16 @@
 </div>
 <script src="node_modules/vue/dist/vue.js"></script>
 <!--基于promise的-->
-<script src="node_modules/axios/dist/axios.js"></script>
+<script src="./2.4.promise-ajax.js"></script>
 <script>
 let vm = new Vue({
     el:'#app',
     //专门用来发送ajax的方法
     created(){//数据被初始化后会调用，this指向指的也是vm实例，钩子函数
-        //promise 解决回调问题的
-        axios.get('./carts.json').then(function(res){//success
-            console.log(res);
-        },function(err){//error
-            console.log(err);
-        });
+        
+        ajax({url:'./carts.json'}).then((res)=>{
+            console.log(res)
+        },(err)=>{})
     },
     data:{
         products:[]

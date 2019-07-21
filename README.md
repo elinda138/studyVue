@@ -169,3 +169,8 @@ git remote add origin https://github.com/kong/springcloud.git
   git push -u origin master (初次推送要加 -u 后面在推送就不用了)
 
 ##转json JSON.stringify()
+
+##Browsersync
+- （全局安装）npm install -g browser-sync
+- （本地安装）npm install browser-sync --save-dev
+- 看文件+服务器 browser-sync start --files "app/css/*.css" --server - browser-sync start --files "**" --server
