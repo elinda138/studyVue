@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>动画</title>
+    <link rel="stylesheet" href="node_modules/animate.css/animate.css">
+    <style>
+        div>div{
+            width:100px; height: 100px; background: #f00;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--v-if v-show if操作的是dom,false时dom不存在 show操作的是样式，false时dom隐藏-->
+    <!--如果频繁的切换dom使用v-show, 当数据一开始就能确定下来后面不在用了使用v-if更好一些，如果if不通过内陪指令不会在执行了-->
+    <!--如果频繁的切换dom使用v-show, 当数据一开始就能确定下来后面不在用了使用v-if更好一些，如果if不通过内陪指令不会在执行了-->
+    <!--只有dom从显示到隐藏 或者隐藏到显示 才能使用vue动画-->
+    <button @click="flag=!flag">切换</button>
+    <!--vue自定义标签 组件-->
+    <transition enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
+        <div v-show="flag">我爱你</div>
+    </transition>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            flag:true
+        }
+    })
+</script>
+</body>
+</html>

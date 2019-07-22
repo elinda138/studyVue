@@ -22,7 +22,9 @@ let vm = new Vue({
         
         ajax({url:'./carts.json'}).then((res)=>{
             console.log(res)
-        },(err)=>{})
+        },(err)=>{
+            console.log(err)
+        })
     },
     data:{
         products:[]

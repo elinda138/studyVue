@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>动画</title>
+    <link rel="stylesheet" href="node_modules/animate.css/animate.css">
+    <style>
+        div>div{
+            width:100px; height: 100px; background: #f00;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--只有dom从显示到隐藏 或者隐藏到显示 才能使用vue动画-->
+    <button @click="flag=!flag">切换</button>
+    <input type="text" v-model="query">
+    <!--vue自定义标签 组件-->
+    <transition-group enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
+        <!--key区分开是哪个值，哪个动哪个不动-->
+        <!--v-for默认会复用原有的dom元素，如果加了key 而且key不同时它认为就是两个人了-->
+        <!--这里的index不变-->
+        <!-- <div v-for="(a,index) in newArr" :key="index">{{a}}</div> -->
+        <div v-for="(a,index) in newArr" :key="Math.random()">{{a}}</div>
+    </transition-group>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        computed:{
+            newArr(){
+                return this.arr.filter(item=>item==this.query);
+            }
+        },
+        data:{
+            query:'',
+            flag:true,
+            arr:[1,2,3,4,5]
+        }
+    })
+</script>
+</body>
+</html>

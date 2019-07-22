@@ -4,23 +4,19 @@
 	<!-- 聊天 -->
     <meta charset="utf-8">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <title>charset</title>
+    <title>计算属性</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
 <div id="app">
-    <!--bootstrap 栅格化布局 默认12列 （有一些框架可能是24列）-->
-    <!--常见的样式 基本样式+增强样式-->
-    <!--default 灰色 success 绿色 danger 红色 warning 警告色 info 浅蓝色-->
-    <!--vue的UI框架 iview,mintui(移动端饿了么）、elementui-->
     <div class="container">
          <!--每一行又会拥有12列-->
         <div class="row">
             <table class="table table-hover table-bordered">
                 <caption class="h2 text-warning text-center">购物车购物车</caption>
                 <tr>
-                    <!--click点击时 checkbox的状态还没有改变，所以拿到的总是相反的，change可以保证只有当值变化后再触发函数-->
-                    <th>全选<input type="checkbox" v-model="checkAll" @change="checkchange"></th>
+                    <!--v-model先将数据取出来，读取，改后就set-->
+                    <th>全选<input type="checkbox" v-model="checkAll"></th>
                     <td>商品</td>
                     <td>单价</td>
                     <td>数量</td>
@@ -32,7 +28,6 @@
                     <td>
                         <input type="checkbox" 
                                v-model="product.isSelected"
-                               @change="checkOne"
                         >
                     </td>
                     <td><img v-bind:src="product.productCover" :title="product.productName" alt="">{{product.productInfo}}</td>
@@ -49,8 +44,8 @@
                     <td><button class="btn btn-danger" @click="remove(product)">删除</button></td>
                 </tr>
                 <tr>
-                    <!--{{sum()}} 数据一变化就会重新调用此函数 算出最新的结果,不会缓存上一次的结果 computed可以解决这个问题-->
-                    <td colspan="6">总价格：{{sum() | toFixed(2)}}</td>
+                    <!--{{sum}} 是个计算属性-->
+                    <td colspan="6">总价格：{{sum | toFixed(2)}}</td>
                 </tr>
             </table>
         </div>
@@ -63,6 +58,32 @@
 <script>
 let vm = new Vue({
     el:'#app',
+    //当给全选赋值时，要影响其他人的变化，当页面刷新时，获取全选值，是根据下面的checkbox计算出来的结果给全选赋值  Object,defineProperty与computed用法相似
+    computed:{ //放在computed中最后也会放在vm上，不能和methods与data重名
+        checkAll:{  //checkAll对象是算出来的，而不是真实存在的数据
+            //当products值变化时会重新计算
+            get(){//get和set this指向实例  默认v-model会获取checkAll的值，所以会调用get方法
+                return this.products.every(p=>p.isSelected);
+            },
+            set(val){//当我们给checkbox赋值的时候
+                this.products.forEach(p=>p.isSelected = val);
+            }
+        },
+        sum(){ //如果计算属性写成函数 默认调用的就是get方法
+            return this.products.reduce((prev,next)=>{
+                if(!next.isSelected) return prev;  //如果当前没被选中，就不加当前这一项
+                return prev+next.productPrice*next.productCount;
+            },0);
+        }
+        // sum:{ //sum的结果会被缓存 如果依赖的数据没有变化就不会重新执行
+        //     get(){
+        //         return this.products.reduce((prev,next)=>{
+        //             if(!next.isSelected) return prev;  //如果当前没被选中，就不加当前这一项
+        //             return prev+next.productPrice*next.productCount;
+        //         },0);
+        //     }
+        // }
+    },
     filters:{//可以有好多的自定义过滤器
         toFixed(input,param1){  //这里的this指向的是windows  ,第1个参数input代表的是管道符前面的内容，第2个参数param1代表的是toFixed中传递的参数
             return '￥'+input.toFixed(param1);
@@ -78,31 +99,16 @@ let vm = new Vue({
             axios.get('./carts.json').then(res=>{//success
                 console.log(res);
                 this.products = res.data;  //获取数据 需要的是res.data
-                this.checkOne();//数据获取完成后给 checkAll赋予默认值
             },err=>{//error
                 console.log(err);
             });
         },
         remove(p){//p代表的是当前点击的数组这一项 [ccc,eee,gtg,qq,p]
             this.products = this.products.filter(item=>item!==p);//把过滤后的数据赋值给数组    p和ccc相不相等，不等是true，true就留下，一个个比下去，发现p等不等于P,相等就取反，取反后为false,就不要这个了。
-        },
-        checkchange(){//根据当前自己的状态设置其他人的状态实现全选和反选
-            this.products.forEach(item=>item.isSelected=this.checkAll);
-        },
-        checkOne(){//根据下面点击的结果控制上面全选的结果
-            this.checkAll = this.products.every(item=>item.isSelected);//item.isSelected如果其中有一个为false则结束，则checkAll为false,如果每一个全是true则checkAll为true
-        },
-        sum(){ //求和函数
-            return this.products.reduce((prev,next)=>{
-                if(!next.isSelected) return prev;  //如果当前没被选中，就不加当前这一项
-                return prev+next.productPrice*next.productCount;
-            },0)
         }
-
     },
     data:{
-        products:[],
-        checkAll:false //是否全选，默认不全选
+        products:[]
     }
 })
 </script>

@@ -1,4 +1,4 @@
-## vue(view)就一套构建用户界面的（渐进式框架）
+## vue(view)就一套构建用户界面的（渐进式框架）https://cn.vuejs.org/
 ## vue 数据驱动(主要操作数据)
 - 操作dom
 ## JS 数据类型
@@ -168,9 +168,11 @@ git remote add origin https://github.com/kong/springcloud.git
 - 6. 把本地项目推送到远程仓库
   git push -u origin master (初次推送要加 -u 后面在推送就不用了)
 
-##转json JSON.stringify()
+## 转json JSON.stringify()
 
-##Browsersync
+## Browsersync
 - （全局安装）npm install -g browser-sync
 - （本地安装）npm install browser-sync --save-dev
-- 看文件+服务器 browser-sync start --files "app/css/*.css" --server - browser-sync start --files "**" --server
+- 看文件+服务器 browser-sync start --files "app/css/*.css" --server 全部文件时 browser-sync start --files "**" --server
+
+## uni-app一套代码可生成小程序，h5，安卓APP，IOS APP
