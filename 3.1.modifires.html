@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>聊天(客服版)</title>
+	
+</head>
+<body>
+<div id="app">
+    <!-- 从捕获到自己在冒泡-->
+    <!-- <div @click.capture="parent">parent
+        <div @click="child">child
+            <div @click="grandson">grandson</div>
+        </div>
+    </div> -->
+    <!-- stopPropagation 阻止事件传播往上往下都会阻止-->
+    <!-- <div @click.capture.stop="parent">parent
+        <div @click.stop="child">child
+            <div @click="grandson">grandson</div>
+        </div>
+    </div> -->
+    <!-- once 只执行触发一次-->
+    <!-- <div @click.capture.stop="parent">parent
+        <div @click.once="child">child
+            <div @click="grandson">grandson</div>
+        </div>
+    </div> -->
+    <!-- self 判断事件源绑定事件-->
+    <!-- <div @click.capture.stop="parent">parent
+        <div @click.self="child">child
+            <div @click="grandson">grandson</div>
+        </div>
+    </div> -->
+    <div @click="parent">parent
+        <div @click="child">child
+            <div @click="grandson">grandson</div>
+        </div>
+    </div>
+    <!-- prevent 阻止了链接跳转的默认行为-->
+    <a href="http://www.zhufengpeixun.cn" @click.prevent="parent">fc</a>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        methods:{
+            parent(){
+                alert('parent');
+            },
+            child(){
+                alert('child');
+            },
+            grandson(e){
+                alert('grandson');
+                // e.cancelBubble=true  //阻止冒泡
+                // e.stopPropagation()=true  //阻止冒泡
+            }
+        },
+        data:{
+            
+
+        }
+    })
+</script>
+</body>
+</html>

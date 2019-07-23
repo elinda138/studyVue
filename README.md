@@ -101,7 +101,7 @@
 
 ### 指令
 - dom元素的行间属性，vue提供了内置的指令，必须v-开头，后面的值均为变量
-   - v-model （表单元素）它会忽略掉value,checked,selected,作用是：将数据绑定到视图上，视图修改后会影响数据的变化
+   - v-model （表单元素）它会忽略掉value,checked,selected,作用是：将数据绑定到视图上，视图修改后会影响数据的变化，（如果checkbox,select多选是数组，提供一个value属性）（radio checkbox分组靠的是v-model），（不存在checked selected)
    - v-text 可取代{{}} v-cloak 解决闪烁（块）问题，后期都可以不采用，使用v-cloaks 要加样式
    - v-once 绑定一次，数据在变化不会导致视图刷新，写在不想刷新的标签上
    - v-html 将html字符串转化成html
@@ -113,6 +113,9 @@
    - checkbox(1、如果是复选框 只有一个复选框的时候，会把此值转化为boolean类型true代表选中2、如果是多个checkbox  要增加value属性并且数据类型是数组) (radio checkbox分组靠的是v-model),checked selected不存在
    - 修饰符 .number .lazy
    - 按键盘修饰符 .enter .ctrl .keyCode
+
+## vue 第三天
+
 ### 事件v-on(@)
 -绑定给dom元素，函数需要定义在methods中，不能和data里的内容重名，this指铅的是实例，不能使用箭头函数，事件源对象如果不写括号，可以自动传入，否则只能传入$event
 ```
@@ -121,13 +124,13 @@
    - 事件     (冒泡从下到上，捕获从上到下（捕获有限制性）)
         - @事件.shop    .capture.stop阻止事件传播
         ```
-        stopPropagation(阻止冒泡),cancelBubble=true;
+        stopPropagation,cancelBubble=true;(阻止冒泡)
         ```
         - @事件.capture    捕获
         ```
         xxx.addEventListener('click',fn,true)
         ```
-        - @事件.prevent
+        - @事件.prevent   阻止默认行为
         ```
         preventDefault,returnValue=false
         ```
@@ -137,16 +140,24 @@
         ```
         - @事件.self
         ```
-        e.srcElement&&e.target 判断事件源绑定事件
+        e.srcElement(判断当前是点的哪个事件原在执行)&&e.target 判断事件源绑定事件
         ```
-   - jquery once
-   - e.srcElement(判断当前是点的哪个事件原在执行)&&e.target 判断事件源绑定事件
+
+## filters实例上可以用
+```
+e
+```
+
+
+
+
+
+
+
 ## 安装
 ```
 npm install vue axios bootstrap
 ```
-
-
 
 ## git
 - 1、先从github克隆到本地
