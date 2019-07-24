@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>filters</title>
+	
+</head>
+<body>
+<div id="app1">{{'hello' | my}}</div>
+<div id="app2">{{'hello' | my}}</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //全局过滤器
+    Vue.filter('my',(data)=>{//全局过滤器,过滤器要放在页面的顶部
+        return 'jw'+data;
+    })
+    new Vue({
+        el:'#app1', 
+    });
+    new Vue({
+        el:'#app2'    
+    });  
+    
+    // filters属于某个实例上的
+    // new Vue({
+    //     el:'#app1',
+    //     filters:{
+    //         my(data){
+    //             return 'jw'+data;
+    //         }
+    //     }
+        
+    // })
+    // new Vue({
+    //     el:'#app2',
+        
+    // })
+</script>
+</body>
+</html>

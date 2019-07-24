@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>checkAll</title>
+	
+</head>
+<body>
+<div id="app">
+    <!--computed当值变了我计算新值-->
+    <input type="text" v-model="a">
+    {{msg}}
+    <!--根据输入框a中的内容 算出一个错误信息-->
+    <!--当给a赋值的时候影响了 错误信息的改变 错误的-->
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        computed:{  //computed 默认调用get方法，必须有return， computed不支持异步。如：校验用户是否存在，要ajax请求后台，后台返回个值是否成功，需要异步加载   
+           msg(){
+               
+               if(this.a.length<3){
+                   return '少了'
+               }
+               if(this.a.length>6){
+                return '多了'
+               }
+               return '';
+           }
+        },
+        data:{
+            a:''
+        }
+    })
+</script>
+</body>
+</html>
+<!--
+    // 当给a赋值的时候影响了 错误信息的改变 错误的 
+    let vm = new Vue({
+        el:'#app',
+        computed:{
+            a:{   //如果写了set方法，并且val给了别人，那当前的a就不会被赋予结果了
+                get(){//返回什么结果 就会赋予给checkAll属性
+                    // return ''
+                    return this.msg
+                },
+                set(val){
+                    this.msg=val;
+                }
+            }
+        },
+        data:{
+            msg:''
+            
+
+        }
+    })
+-->

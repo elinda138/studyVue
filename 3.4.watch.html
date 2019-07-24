@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>watch</title>
+	
+</head>
+<body>
+<div id="app">
+    <!--watch观察a的值变化后 我来干一件事,当需要在数据变化时执行异步时用watch-->
+    <input type="text" v-model="a">
+    {{msg}}
+    
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            a:'',
+            msg:''
+        },
+        // watch:{  //只有值变化的时候才会触发   支持异步了 ，其他情况我们更善于使用computed
+        //     a(newVal,oldVal){ //watch的属性名字要和观察的人的名字一致
+        //         // console.log(newVal,oldVal);
+        //         this.msg = ".........";   //设置中间状态
+        //         setTimeout(()=>{
+        //             if(newVal.length<3){
+        //                 return this.msg = '少了'
+        //             }
+        //             if(newVal.length>6){
+        //                 return this.msg = '多了'
+        //             }
+        //             this.msg = '';//正常的时候为空
+        //         },2000);  
+        //     }
+        // }
+    })
+    vm.$watch('a',(newVal,oldVal)=>{ //watch的属性名字要和观察的人的名字一致
+        // console.log(newVal,oldVal);
+        vm.msg = ".........";   //设置中间状态
+        setTimeout(()=>{
+            if(newVal.length<3){
+                return vm.msg = '少了'
+            }
+            if(newVal.length>6){
+                return vm.msg = '多了'
+            }
+            vm.msg = '';//正常的时候为空
+        },2000) 
+    })
+</script>
+</body>
+</html>

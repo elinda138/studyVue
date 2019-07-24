@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>watch-computed</title>
+	
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="val">
+    
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            firstName:'dfger',
+            lastName:'jw',
+            val:''   //dfger+val+jw
+        },
+        computed:{  
+            fullName(){
+                return this.firstName + this.val + this.lastName;
+            }  
+        }
+    })
+    // let vm = new Vue({
+    //     el:'#app',
+    //     data:{
+    //         firstName:'dfger',
+    //         lastName:'jw',
+    //         val:'',   //dfger+val+jw
+    //         fullName:""
+    //     },
+    //     watch:{  
+    //         val(newVal){
+    //             this.fullName= this.firstName+newVal+this.lastName;
+    //         },
+            
+    //     }
+    // })
+</script>
+</body>
+</html>

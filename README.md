@@ -143,11 +143,23 @@
         e.srcElement(判断当前是点的哪个事件原在执行)&&e.target 判断事件源绑定事件
         ```
 
-## filters实例上可以用
+## filters(过滤器）实例上可以用
 ```
-e
-```
+{{'123' ｜ my(1,2,3)}}
+filters:{  //filters属于某个实例上的
+   my(data,param1,param2,param3){
 
+   }
+}
+new Vue({
+
+})
+```
+## computed 计算“属性”  属性不是方法
+- 方法不会有缓存，computed会根据依赖（归vue管理的数据，可以响应式的变化的）的属性进行缓存
+- 两部分组成有get和set（不能只写set）一般情况下通过js赋值影响其他人或者表单元素设置值的时候会调用set方法
+
+## watch 观察
 
 
 
