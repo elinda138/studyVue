@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>v-bind</title>
+	<style>
+        .x{background: blue;}
+        .y{font-size: 30px;}
+        .z{color:pink;}
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--:class绑定的样式和class绑定的不冲突-->
+    <!-- 1、{className:isActive}-->
+    <div class="x" :class="{z:flag,y:true}">123</div>
+    <div class="x" :class="[class1,class2,{z:false}]">123</div>
+
+    <div v-for="(a,index) in 10" :class="{x:index%2}">{{a}}</div>
+    
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //class="a b c"
+    //第一种方式是对象  第二种方式是数组
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            flag:true,
+            class1:"x",
+            class2:'y'
+        }
+    })
+
+</script>
+</body>
+</html>

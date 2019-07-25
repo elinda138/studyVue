@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>v-style</title>
+</head>
+<body>
+<div id="app">
+
+    <div style="font-size: 30px;" :style="'font-size:50px;'">123</div>
+    <div style="font-size: 30px;" :style="{backgroundColor:'red',color:'pink'}">123</div>
+    <div :style="[sty1,sty2,{fontSize:'60px'}]">123</div>
+
+    
+    
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //class="a b c"
+    //第一种方式是对象  第二种方式是数组
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            sty1:{backgroundColor:'red'},
+            sty2:{color:'pink'}
+            
+        }
+    })
+
+</script>
+</body>
+</html>

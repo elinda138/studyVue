@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>样式</title>
+	
+</head>
+<body>
+<div id="app">
+    <!--template标签 是vue提供给我们的没有任何的实际意义，用来包裹元素用的，v-show不支持template标签，只有v-if使用-->
+    <template v-if="flag">
+        <div>我很帅</div>
+        <div>我很帅</div>
+        <div>我很帅</div>
+    </template>
+    <div v-else>我非常刷</div>
+    <button @click="cut=!cut">点我</button>
+    <template v-if='cut'>
+        <label>注册</label>
+        <input type="text" key="1">
+    </template>
+    <template v-else>
+        <label>登录</label>
+        <input type="text" :key=2>
+    </template>
+    
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            flag:false,
+            cut:true
+        }
+    })
+
+</script>
+</body>
+</html>

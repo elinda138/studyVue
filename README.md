@@ -161,6 +161,19 @@ new Vue({
 
 ## watch 观察
 
+## v-if/v-show
+- v-if操作的是dom v-if可以和v-else-if,v-else 连写
+- v-show 操作的是样式
+
+## v-bind简写：
+- 动态绑定“属性”
+```
+<img :src="src" :width="w" />
+```
+
+## 实现单页开发的方式
+- 通过hash记录
+
 
 
 
