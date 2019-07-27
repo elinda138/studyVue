@@ -6,6 +6,9 @@
     <title>todolist</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <!-- v3.bootcss.com -->
+    <style>
+        .del{text-decoration:line-through;color:#ccc !important;}
+    </style>
 </head>
 <body>
 <div id="app">
@@ -23,13 +26,20 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
-                        <h3 class="text-danger">亲~ ^_^你有X件事要完成</h3>
+                        <h3 class="text-danger">亲~ ^_^你有{{count}}件事要完成</h3>
+                        <input type="text" class="form-control" v-model="title" @keyup.13="add">
                     </div>
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <input type="checkbox">睡觉
-                                <button class="pull-right btn btn-danger btn-xs">&bigotimes;</button>
+                            <li class="list-group-item" v-for="(todo,index) in todos" @dbclick="remember(todo)">
+                                <!--如果isSelected为true，则del生效-->
+                                <!--当我点击li时 我可以知道点击的是哪一项，如果我点击的todo和当前循环的某一个相等的时候 则显示输入框-->
+                                <span :class="{del:todo.isSelected}" v-show="">
+                                    <input type="checkbox" v-model="todo.isSelected"> 
+                                    {{todo.title}}
+                                </span>
+                                <input type="text" v-model="todo.title" v-show="">
+                                <button class="pull-right btn btn-danger btn-xs" @click="remove(todo)">&bigotimes;</button>
                             </li>
                         </ul>
                     </div>
@@ -49,13 +59,7 @@
 </div>
 <script src="node_modules/vue/dist/vue.js"></script>
 <script src="node_modules/axios/dist/axios.js"></script>
-<script>
-    let vm = new Vue({
-        el:'#app',
-        data:{   
-        }
-    })
+<script src="3.8.todo.js"></script>
 
-</script>
 </body>
 </html>
