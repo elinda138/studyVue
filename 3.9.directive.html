@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>directive</title>
+    <style>
+        .a{position: absolute; width:100px; height: 100px; background: #f00;}
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--指令v-color为名字   "flag"为变量-->
+    <button v-color.13="flag">变色</button>
+    <div v-drag class="a"></div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        directives:{
+            drag(el){  //拖拽
+                el.onmousedown=function(e){
+                    var disx = e.pageX -el.offsetLeft; //鼠标距离x
+                    var disy = e.pageY -el.offsetTop; //鼠标距离y
+                    document.onmousemove=function(e){
+                        el.style.left = e.pageX - disx + 'px';
+                        el.style.top = e.pageY - disy + 'px';
+                    }
+                    document.onmouseup = function(){
+                        document.onmousemove = document.onmouseup - null
+                    }
+                    e.preventDefault();
+                }
+            },
+            color(el,bindings){//el指代的是当前的dom，el指代的是button按钮
+                console.log(arguments)
+                el.style.background = bindings.value
+            }
+        },
+        el:'#app',
+        data:{
+            flag:'red'
+        }
+    })
+</script>
+</body>
+</html>

@@ -31,14 +31,14 @@
                     </div>
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="(todo,index) in todos" @dbclick="remember(todo)">
+                            <li class="list-group-item" v-for="(todo,index) in todos" @dblclick="remember(todo)">
                                 <!--如果isSelected为true，则del生效-->
                                 <!--当我点击li时 我可以知道点击的是哪一项，如果我点击的todo和当前循环的某一个相等的时候 则显示输入框-->
-                                <span :class="{del:todo.isSelected}" v-show="">
+                                <span :class="{del:todo.isSelected}" v-show="cur!==todo">
                                     <input type="checkbox" v-model="todo.isSelected"> 
                                     {{todo.title}}
                                 </span>
-                                <input type="text" v-model="todo.title" v-show="">
+                                <input type="text" v-model="todo.title" v-show="cur==todo" @keyup.enter="cancel" @blur="cancel" v-focus="cur==todo">
                                 <button class="pull-right btn btn-danger btn-xs" @click="remove(todo)">&bigotimes;</button>
                             </li>
                         </ul>
