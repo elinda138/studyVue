@@ -6,10 +6,20 @@ let vm = new Vue({
             {isSelected:false,title:'吃饭'}
         ],
         title:'',
-        cur:''
+        cur:'',
+        hash:''
     },
     created(){  //ajax获取 初始化数据 页面一加载创建
-        this.todos = JSON.parse(localStorage.getItem('data')) || this.todos;  //有数据用存的，没有用默认的
+        //如果localStorage中有数据就用有的这个，如数据就用默认的
+        this.todos = JSON.parse(localStorage.getItem('data')) || this.todos;  
+        //监控hash值的变化,如果页面已经有hash了，重新刷新页面也要获取hash值  绑定个事件，hash一变就触发
+        this.hash = window.location.hash.slice(2) || 'all';  //slice(2)截取掉#/ ，没有hash时用默认的all
+        window.addEventListener('hashchange',()=>{
+            // console.log(window.location.hash)
+            //当hash值变化 重新操作记录的数据
+            this.hash = window.location.hash.slice(2);
+        },false);
+
 
 
     },
@@ -44,6 +54,12 @@ let vm = new Vue({
         }
     },
     computed:{
+        filterTodos(){   //过滤后的数据
+            if(this.hash === 'all') return this.todos
+            if(this.hash === 'finish') return this.todos.filter(item=>item.isSelected)
+            if(this.hash === 'unfinish') return this.todos.filter(item=>!item.isSelected)
+            return this.todos;
+        },
         count(){
             return this.todos.filter(item=>!item.isSelected).length;
         }
