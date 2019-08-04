@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>组件</title>
+</head>
+<body>
+<div id="app">
+    <!--3-->
+    <component1></component1>
+    <component2></component2>
+    
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+//局部组件使用三部曲1、创建这个组件2、注册这个组件3、引用这个组件
+//组件是相互独立的，不能直接跨作用域 实例也是一个组件，组件中拥有声明周期函数
+//
+//
+    let obj = {school:'zfpx'};//如果组件共用了数据会导致同时更新(独立应该是独立的)
+    //子组件不能直接使用父组件的数据（组件之间的数据交互）
+    //组件理论上可以无限嵌套
+    let component1 = {
+        template:'<div @click="fn">组件1{{school}}</div>',
+        data(){
+            return obj
+        },
+        methods:{
+            fn(){
+                this.school = 'hello'
+            }
+        }
+    };   //1
+    let component2 = {
+        template:'<div>组件2 {{school}}</div>',
+        data(){
+            return obj
+        }
+    };   //1
+    let vm = new Vue({
+        el:'#app', 
+        components:{
+            component1,  //2
+            component2
+        },        
+        data:{
+            msg:'hello',arr:[1,2,3]
+        } 
+    })
+        
+</script>
+</body>
+</html>

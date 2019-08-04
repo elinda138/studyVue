@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>发布订阅</title>
+</head>
+<body>
+    <!--父亲绑定一些事件，儿子触发这个事件 将参数传递过去  单向数据流，父亲数据刷新 儿子就刷新-->
+<div id="app">
+    父亲:{{money}}
+    <!--child.on('child-msg',things)-->
+    <!-- <child :m="money" @update:m="val=>this.money=val"></child> -->
+    <!--写的时候我们还是按照原有的写法即可 语法糖-->
+    <!-- function(){}   ()=>{} -->
+    <child :m.sync="money"></child>
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //父传子通过属性，子传父发射事件通知
+    let parent = {template:'<div>parent</div>'};
+    let son = {template:'<div>son</div>'};
+    let grandson = {template:'<div>grandson</div>'};
+    let vm = new Vue({
+        el:'#app', 
+        data:{
+            money:400
+        }, 
+        // methods:{
+        //     //相当于on('xxx',things)
+        //     things(val){
+        //         // alert(val);
+        //         this.money = val;
+        //     }
+        // },
+        components:{
+           child:{
+               props:['m'],
+               template:'<div>儿子:{{m}}<button @click="getMoney()">多要钱</button></div>',
+               methods:{
+                    getMoney(){
+                        this.$emit('update:m',800);//触发自己的自定义事件，让父亲的方法执行
+                    }
+               }
+           }
+        }       
+        
+    });
+        
+</script>
+</body>
+</html>

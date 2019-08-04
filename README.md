@@ -176,8 +176,42 @@ new Vue({
 - 浏览器自带的历史管理的方法history.go(-1)  history.pushState('','','/d')设置状态  需要服务端支持，如没在服务端支持可能会导致404错误
 > 开发时使用hash的方式 上线的话我们会使用history的方式
 
-## 地
+## vue-cli
+- 下载一个全局生成vue项目的脚手架
+```
+npm install vue-cli -g
+vue init webpack <项目名字>
+cd 项目名字
+npm install
+npm run dev
+```
 
+
+## 模块
+- node模块的规范commonjs
+- cmd seajs     amd require
+- umd 为了做兼容处理的
+- esmodule
+   - 如何定义模块(一个js就是一个模块)
+   - 如何导出模块(export)
+   - 如何使用模块(import)
+
+## 先下载webpack
+```
+npm init -y
+npm install webpack --dev  或yarn add webpack --dev
+```
+> 安装webpack 或者less 最好不要安装全局的，否则可能导致webpack的版本差异
+- 在package.json中配置一个脚本，这个脚本用的命令是webpack  会去当前的node_modules下找对应的webpack名字让其执行，执行的就是bin/webpack.js,webpack.js需要当前目录下有个名字叫webpack.config.js的文件，我们通过npm run build执行的目录是当前文件的目录，所以会去当前目录下查找。
+
+
+## 不支持es6引入的库
+
+```
+<script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+<script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script>
+<script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+```
 
 
 

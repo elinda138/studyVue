@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>lifecycle</title>
+</head>
+<body>
+<div id="app">
+    {{a}}
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //生命周期：beforeCreate(出生前)   created数据有了
+    //         beforeMount（挂载前：数据有了编译数据还没有到页面）   mounted    挂载好了页面已渲染出来了
+    //         beforeUpdate（页在更新前）  updated
+    //         beforeDestroy（销毁前）  destroyed
+    let vm = new Vue({//根实例，初始化时会调用很多方法即钩子函数
+        // el:'#app',         
+        beforeCreate(){},//1、此方法是内部方法，一般用不到
+        data:{
+            a:1,b:''
+        },
+        created(){   //2、获取ajax，初始化操作
+            
+        },
+        beforeMount(){},//需要找到el属性  一般都会el属性没有什么实际意义
+        // template:'<div>{{a}}</div>',  //4.如果有template属性会用模板替换掉外部html，只要有此属性app中的内容就没有任何意义了，只能有一个根元素，不能是文本节点
+        mounted(){},    //真实dom渲染完了，可以操作dom了
+        beforeUpdate(){   //数据一变就会触发这个方法，一般用watch来替换掉，watch可以更准确的知道是谁更新了
+            alert('更新之前')
+        },
+        updated(){
+            alert('更新后')
+        },
+        beforeDestroy(){  //可以清除定时器 或者清除事件绑定
+            alert('销毁前')
+        },
+        destroyed(){
+            alert('销毁后')
+        },
+        methods:{
+            c(){
+                alert(1);
+            }
+        }
+    })
+    vm.$mount('#app');   //3、要保证有编译的无素
+    vm.$destroy();//告诉实例要销毁了
+</script>
+</body>
+</html>

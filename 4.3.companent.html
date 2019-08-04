@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>组件</title>
+</head>
+<body>
+<!--分类 页面级组件：1.个页面一个组件
+    2.将可复用的部分抽离出来 基础组件
+    一个自定义标签 vue就会把他看成一个组件div p span a header section..,vue可以给这些标签赋予一定意义
+-->
+<div id="app">
+    <my-handsome></my-handsome>
+    
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+//一般写插件的时候全局组件使用多一些
+//用法：全局组件：可以申明一次在任何地方使用。  局部组件：必须告诉这个组件属于谁
+//1、组件名不要带有大写 多个单词用-
+//2、只要组件名和定义名字相同就可以了（首字母可以大写）
+//3、html采用短横线隔开命名法  js中转驼峰也是可以的
+//4
+    Vue.component('my-handsome',{//一个对象可以看成一个组件
+        template:'<div>{{msg}}</div>',
+        data(){//组件中的数据必须是函数类型 返回一个实例作为组件的数据
+            return{msg:'我很英俊2'}    
+        }
+    });
+    let vm = new Vue({
+        el:'#app',         
+        data:{
+            msg:'hello',arr:[1,2,3]
+        } 
+    })
+        
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>弹框</title>
+    <style>
+        .mask{width:100%;height:100%;position: fixed;background: rgba(0,0,0,.35);top:0;left: 0;}
+        .dialog{width:400px; height: 150px; background: #fff; position:fixed; top:50%; left: 50%; transform:translate3d(-50%,-50%,0)}
+    </style>
+</head>
+<body>
+<div id="app">
+    <button>弹</button>
+    <!-- 如果show的值是true则显示， false则隐藏 @close对应的函数是点击关闭按钮时触发的函数 -->
+    <!-- <pop :show="false" @close="fn"></pop> -->
+    <pop :show="false"></pop>
+    <!-- <div class="mask">
+        <div class="dialog">
+            <button>关闭</button>
+        </div>
+    </div> -->
+</div>
+<template id="dialog">
+    <div class="mask">
+        <div class="dialog">
+            <button>关闭</button>
+        </div>
+    </div>
+</template>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let pop = {
+        props:['show'],
+        template:'#dialog'
+    };
+    let vm = new Vue({
+        el:'#app', 
+        data:{
+            money:400
+        }, 
+        components:{
+           pop
+        }       
+        
+    });
+        
+</script>
+</body>
+</html>
