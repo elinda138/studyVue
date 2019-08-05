@@ -176,6 +176,16 @@ new Vue({
 - 浏览器自带的历史管理的方法history.go(-1)  history.pushState('','','/d')设置状态  需要服务端支持，如没在服务端支持可能会导致404错误
 > 开发时使用hash的方式 上线的话我们会使用history的方式
 
+## yarn安装
+```
+npm install -g yarn 全局安装
+yarn -v 查看是否安装成功
+yarn init 初始化一个项目
+装包
+yarn add packagename
+yarn add packagename --dev
+```
+
 ## vue-cli
 - 下载一个全局生成vue项目的脚手架
 ```
@@ -184,6 +194,7 @@ vue init webpack <项目名字>
 cd 项目名字
 npm install
 npm run dev
+npm install less less-loader axios vuex bootstrap --save-dev
 ```
 
 
@@ -196,14 +207,88 @@ npm run dev
    - 如何导出模块(export)
    - 如何使用模块(import)
 
-## 先下载webpack
+## 先下载webpack开发依赖
 ```
 npm init -y
-npm install webpack --dev  或yarn add webpack --dev
+npm install webpack --save-dev  或yarn add webpack --dev
 ```
 > 安装webpack 或者less 最好不要安装全局的，否则可能导致webpack的版本差异
-- 在package.json中配置一个脚本，这个脚本用的命令是webpack  会去当前的node_modules下找对应的webpack名字让其执行，执行的就是bin/webpack.js,webpack.js需要当前目录下有个名字叫webpack.config.js的文件，我们通过npm run build执行的目录是当前文件的目录，所以会去当前目录下查找。
+- 在package.json中配置一个脚本，这个脚本用的命令是webpack,会去当前的node_modules下找bin对应的webpack名字让其执行，执行的就是bin/webpack.js,webpack.js需要当前目录下有个名字叫webpack.config.js的文件，我们通过npm run build执行的目录是当前文件夹的目录，所以会去当前目录下查找。
 
+## babel转译es6->es5
+- 安装babel
+```
+npm install babel-core --save-dev
+npm install babel-loader --save-dev
+```
+
+## babel-preset-es2015
+- 让翻译官拥有解析es6语法的功能 es6->es5
+```
+npm install babel-preset-es2015 --save-dev
+```
+
+## babel-preset-stage-0
+- 解析es7语法的
+```
+npm install babel-preset-stage-0 --save-dev
+```
+
+## 解析样式
+- css-loader将css解析成模块，将解析的内容插入到style标签内（）
+```
+npm install css-loader style-loader --save-dev
+```
+## less,sass,stylus(预处理语言)
+- less-loader less
+- sass-loader
+- stylue-loader
+```
+npm install less less-loader --save-dev
+```
+## 解析图片
+- file-loader url-loader(url-loader是依赖于file-loader的)
+```
+npm install file-loader url-loader --save-dev
+```
+
+## 需要解析html插件
+- 作用是以我们自己的html为模板将打包后的结果，自动引入到html中产出到dist目录下
+```
+npm install html-webpack-plugin --save-dev
+```
+
+## webpack-dev-server
+- 这里面内置了服务，可以帮我们启动一个端口号，当代码更新时，可以自动打包（内存中打包），代码有变化就重新执行
+```
+npm install webpack-dev-server --save-dev
+```
+
+## 完成一个项目
+- 进入项目路径  cd 项目路径
+- clear
+- 初始化  npm init -y
+- 打包webpack  启服务webpack-dev-server
+- 编译js 核心包babel-core  解析翻译官babel-loader  
+  解析es6 babel-preset-es2015 解析es7 babel-preset-stage-0
+  样式 css-loader style-loader less less-loader
+  图片 file-loader url-loader 
+  html html-webpack-plugin
+``` 
+cd xianmu
+clear
+npm init -y
+npm install webpack webpack-dev-server babel-core babel-loader babel-preset-es2015 babel-preset-stage-0 css-loader style-loader less less-loader file-loader url-loader html-webpack-plugin --save-dev
+有可能要 npm install @babel/core babel-loader@7 --save-dev
+有可能要 npm install webpack-cli --save-dev
+```
+
+## vue依赖
+- 解析.vue文件的vue-loader 会自动的调用vue-template-compiler
+- 编译vue模板vue-template-compiler
+``` 
+npm install vue-loader vue-template-compiler vue-router --save-dev
+```
 
 ## 不支持es6引入的库
 
@@ -248,5 +333,6 @@ git remote add origin https://github.com/kong/springcloud.git
 - （全局安装）npm install -g browser-sync
 - （本地安装）npm install browser-sync --save-dev
 - 看文件+服务器 browser-sync start --files "app/css/*.css" --server 全部文件时 browser-sync start --files "**" --server
+
 
 ## uni-app一套代码可生成小程序，h5，安卓APP，IOS APP

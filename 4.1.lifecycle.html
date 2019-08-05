@@ -18,12 +18,12 @@
     //         beforeDestroy（销毁前）  destroyed
     let vm = new Vue({//根实例，初始化时会调用很多方法即钩子函数
         // el:'#app',         
-        beforeCreate(){},//1、此方法是内部方法，一般用不到
+        beforeCreate(){alert('组件实例化之前执行的内部函数')},//1、此方法是内部方法，一般用不到
         data:{
             a:1,b:''
         },
         created(){   //2、获取ajax，初始化操作
-            
+            // alert('组件实例化完毕，但页面还未显示')
         },
         beforeMount(){},//需要找到el属性  一般都会el属性没有什么实际意义
         // template:'<div>{{a}}</div>',  //4.如果有template属性会用模板替换掉外部html，只要有此属性app中的内容就没有任何意义了，只能有一个根元素，不能是文本节点
