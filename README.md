@@ -278,7 +278,7 @@ npm install webpack-dev-server --save-dev
 cd xianmu
 clear
 npm init -y
-npm install webpack webpack-dev-server babel-core babel-loader babel-preset-es2015 babel-preset-stage-0 css-loader style-loader less less-loader file-loader url-loader html-webpack-plugin --save-dev
+npm install webpack webpack-dev-server webpack-cli babel-core babel-loader babel-preset-es2015 babel-preset-stage-0 css-loader style-loader less less-loader file-loader url-loader html-webpack-plugin --save-dev
 有可能要 npm install @babel/core babel-loader@7 --save-dev
 有可能要 npm install webpack-cli --save-dev
 ```
@@ -336,3 +336,4 @@ git remote add origin https://github.com/kong/springcloud.git
 
 
 ## uni-app一套代码可生成小程序，h5，安卓APP，IOS APP
+## HBuilderX uni-app wap2app MUI 5+Runtime
