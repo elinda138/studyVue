@@ -10,10 +10,10 @@
 </head>
 <body>
 <div id="app">
-    <button>弹</button>
+    <button @click="flag=true">弹</button>
     <!-- 如果show的值是true则显示， false则隐藏 @close对应的函数是点击关闭按钮时触发的函数 -->
     <!-- <pop :show="false" @close="fn"></pop> -->
-    <pop :show="false"></pop>
+    <pop :show="flag" @close="()=>flag=false"></pop>
     <!-- <div class="mask">
         <div class="dialog">
             <button>关闭</button>
@@ -21,9 +21,9 @@
     </div> -->
 </div>
 <template id="dialog">
-    <div class="mask">
+    <div class="mask" v-show="show">
         <div class="dialog">
-            <button>关闭</button>
+            <button @click="shutdown">关闭</button>
         </div>
     </div>
 </template>
@@ -31,16 +31,21 @@
 <script src="node_modules/vue/dist/vue.js"></script>
 <script>
     let pop = {
-        props:['show'],
-        template:'#dialog'
+        props:['show'],  //接收了父组件的属性来控制显示和隐藏
+        template:'#dialog',
+        methods:{
+            shutdown(){
+                this.$emit('close');
+            }
+        }
     };
     let vm = new Vue({
         el:'#app', 
         data:{
-            money:400
+            flag:false
         }, 
         components:{
-           pop
+           pop  //名字不能叫dialog，原生app已有这个名字
         }       
         
     });
