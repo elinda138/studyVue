@@ -26,9 +26,7 @@
                 <!--属性绑数据要用v-bind:属性或:属性 指令：动态绑定数据-->
                 <tr v-for="(product,index) in products">
                     <td>
-                        <input type="checkbox" 
-                               v-model="product.isSelected"
-                        >
+                        <a href="javascript:;" class="item-check-btn" :class="'check':product.checked" @click=selectedProduct(product)></a>
                     </td>
                     <td><img v-bind:src="product.productCover" :title="product.productName" alt="">{{product.productInfo}}<br/>
                         赠送：<span v-for="part in product.parts">{{part.partsName}} </span>
@@ -110,16 +108,18 @@ let vm = new Vue({
         remove(p){//p代表的是当前点击的数组这一项 [ccc,eee,gtg,qq,p]
             this.products = this.products.filter(item=>item!==p);//把过滤后的数据赋值给数组    p和ccc相不相等，不等是true，true就留下，一个个比下去，发现p等不等于P,相等就取反，取反后为false,就不要这个了。
         },
-        changeMoney(_product,way){//_product代表传的对应产品，way操作的方式，-1代表-，1代表+
+        changeMoney(item,way){//item代表传的对应产品，way操作的方式，-1代表-，1代表+
             if(way>0){
-                _product.productCount++;
+                item.productCount++;
             }else{
-                _product.productCount--;
-                if(_product.productCount<0){
-                    _product.productCount=0
-                }
+                item.productCount--;
             }
 
+        },
+        selectedProduct(item){
+            if(typeof item.checked == 'undefined'){
+                
+            }
         }
     },
     data:{

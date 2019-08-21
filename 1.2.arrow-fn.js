@@ -2,10 +2,10 @@
 //自己家没有this就找上一级的this
 //如何更改this指向
 //1)call apply bind
-//2)var that =this;
+//2)var that =this;或_this=this
 //3)=>
-//如何确定this是谁  看谁调用的  .点前面是谁this就是谁
-//原始函数
+//如何确定this是谁  看谁调用的  .点前面是谁this就是谁(箭头行数中函数体中this的指向是定义时this的指向，)
+//原始函数，普通函数this的指向是该函数被调用的对象
 // function a(b){
 //     return b+1;
 // }
@@ -13,7 +13,7 @@
 // let a = b => b+1;
 //去掉function关键字
 //当申明的参数只有1个时，可以省略()，小括号和大括号之间有一个箭头
-//如果没有大括号则表达式直接是返回值  有大括号必须写return
+//如果没有大括号则表达式直接是作为返回值  有大括号必须写return
 //原始函数
 // function a(b){
 //     return function(c){
