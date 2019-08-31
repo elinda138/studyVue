@@ -337,3 +337,27 @@ git remote add origin https://github.com/kong/springcloud.git
 
 ## uni-app一套代码可生成小程序，h5，安卓APP，IOS APP
 ## HBuilderX uni-app wap2app MUI 5+Runtime
+
+## 快速启动一个静态文件服务器
+```
+npm install http-server -g  //全局安装
+http-server.cmd  //简写  hs -o    
+```
+
+## Mock
+- JSON文件的方式就是最简单的mock行为（缺点很明显）
+- 自己写一个简单的API接口（不一定会写）
+- 第三方工具
+  - mock.js（无法持久化数据）mockjs.com  http://mockjs.com/examples.html  https://github.com/nuysoft/Mock/wiki/Getting-Started
+  - json-server
+
+
+## mock.js使用方法
+- 1.引入mock.js文件  mockJs
+- 2.引入过后全局对象上会多一个Mock对象
+- 3.Mock对象中最常用的就是mock方法
+```
+Mock.mock('/users','get',{
+   hello:'mock.js'
+})
+```
