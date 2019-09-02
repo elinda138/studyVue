@@ -349,7 +349,22 @@ http-server.cmd  //简写  hs -o
 - 自己写一个简单的API接口（不一定会写）
 - 第三方工具
   - mock.js（无法持久化数据）mockjs.com  http://mockjs.com/examples.html  https://github.com/nuysoft/Mock/wiki/Getting-Started
-  - json-server
+  - json-server 提供一种零编码的方式在30秒之内完成一个REST API（讲真） https://github.com/typicode/json-server   http://jsonplaceholder.typicode.com/
+
+## RESTful
+- 面向资源编程
+- 资源指的是一类数据（如电商：有用户，产品，订单，分类等类型的数据
+- 产品表 ->就是产品资源
+- 最重要的是如何表示一个资源
+- 地址即资源
+```
+http://api.demo.com/users   ->应该是所有的用户数据  
+http://api.demo.com/products
+http://api.demo.com/products/iphone  ->特指 iphone 这个商品
+http://api.demo.com/categories
+```
+- 对于资源我的的代码中可能的操作只有增删改查
+在 HTTP协议中对每一个请求URL都会有不同的调词GET(查、获取数据)/POST(增)/PUT(整体更新)/PATCH()/DELETE(删)
 
 
 ## mock.js使用方法
