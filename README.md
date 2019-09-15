@@ -352,7 +352,7 @@ http-server.cmd  //简写  hs -o
   - json-server 提供一种零编码的方式在30秒之内完成一个REST API（讲真） https://github.com/typicode/json-server   http://jsonplaceholder.typicode.com/
 
 ## RESTful
-- 面向资源编程
+- 面向资源（Resource）编程
 - 资源指的是一类数据（如电商：有用户，产品，订单，分类等类型的数据
 - 产品表 ->就是产品资源
 - 最重要的是如何表示一个资源
@@ -366,7 +366,6 @@ http://api.demo.com/categories
 - 对于资源我的的代码中可能的操作只有增删改查
 在 HTTP协议中对每一个请求URL都会有不同的调词GET(查、获取数据)/POST(增)/PUT(整体更新)/PATCH()/DELETE(删)
 
-
 ## mock.js使用方法
 - 1.引入mock.js文件  mockJs
 - 2.引入过后全局对象上会多一个Mock对象
@@ -376,3 +375,27 @@ Mock.mock('/users','get',{
    hello:'mock.js'
 })
 ```
+## JSON Server
+JSON Server 中json文件中的每一个属性就是一个资源，最终会被JSON Server 管理
+https://github.com/typicode/json-server
+测试过程可以用Postman 测试
+```
+npm install -g json-server  安装
+json-server --watch **.json   启动
+```
+## JSON Server基本特性
+- 标准的RESTful API
+- 支持过滤    ?id=1&id=2
+- 支持分页    ?_limit=2 &_page=2
+- 支持排序
+- 支持全文检索   ?q=h
+- 支持关系
+- 支持数据分割
+- 支持操作符(大于小于)
+- 支持JSONP
+- 支持CORS
+- 中间件的方式可以自定义更多的特性
+## 参考资源
+- zce/dashboard -基于Vue.js的一个后台管理系统基本骨架，数据源使用的是json-server   地址：https://github.com/zce/dashboard   https://github.com/zce/dashboard-server
+- zce/api-server -我对json-server做了一些包装，增加了一些特性如（JWT）
+- 有可能存在的趋势无后端noBackend、severless
