@@ -170,6 +170,19 @@ new Vue({
 ```
 <img :src="src" :width="w" />
 ```
+## Axios
+- Axios是一个基于于promise的HTTP库
+- 可以用于浏览器和node.js
+## Axios特性
+- 支持Promise API
+- 拦截请求和响应（请求头加授权信息等）
+- 转换请求数据和响应数据（请求时加密敏感信息，返回时解密）
+- 取消请求
+- 自动转换JSON数据（JSON.stringify()）
+- 客户端支持防御XSRF攻击
+- Axios基础用法（get,post,put等请求方法）
+- Axios进阶用法（实例，配置，拦截器，取消请求等）
+- Axios进一步封装，在项目中的实际应用
 
 ## 实现单页开发的方式
 - 通过hash记录跳转的路径（可以产生历史管理）（哈希值的好处是不会跳转刷新页面）
@@ -187,7 +200,7 @@ yarn add packagename --dev
 ```
 
 ## vue-cli
-- 下载一个全局生成vue项目的脚手架
+- 下载一个全局生成vue项目的脚手架  查版本号vue -V
 ```
 npm install vue-cli -g
 vue init webpack <项目名字>
@@ -195,6 +208,14 @@ cd 项目名字
 npm install
 npm run dev
 npm install less less-loader axios vuex bootstrap --save-dev
+```
+- 卸载vue-cli2.0
+```
+npm uninstall -g vue-cli 
+```
+- 安装vue-cli3.0
+```
+npm uninstall -g @vue/cli 
 ```
 
 
