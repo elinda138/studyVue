@@ -209,6 +209,8 @@ npm install
 npm run dev
 npm install less less-loader axios vuex bootstrap --save-dev
 ```
+
+## vue-cli3.0
 - 卸载vue-cli2.0
 ```
 npm uninstall -g vue-cli 
@@ -217,6 +219,10 @@ npm uninstall -g vue-cli
 ```
 npm uninstall -g @vue/cli 
 ```
+vue create 项目名
+自己操作时，上下键，空格和回车为选择
+cd 项目名
+npm run serve/yarn serve
 
 
 ## 模块
@@ -420,3 +426,59 @@ json-server --watch **.json   启动
 - zce/dashboard -基于Vue.js的一个后台管理系统基本骨架，数据源使用的是json-server   地址：https://github.com/zce/dashboard   https://github.com/zce/dashboard-server
 - zce/api-server -我对json-server做了一些包装，增加了一些特性如（JWT）
 - 有可能存在的趋势无后端noBackend、severless
+
+## koa2
+```
+npm init yes
+npm install --save koa  --save参数，表示自动修改package.json 文件，自动添加依赖项
+npm install --save koa-router   koa路由：路由就是根据不同的url地址，加载不同的页面实现不同的功能。
+```
+- 中间件：匹配路由之前或者匹配路由完成做的一系列的操作。（ 功能：执行任何代码、修改请求和响应对象、终结请求-响应循环、调用堆栈中的下一个中间件)
+
+- 应用级中间件（匹配路由之前打印日期）
+- 路由级中间件（匹配到news路由后继续向下匹配路由）
+- 错误处理中间件
+- 第三方中间件
+
+- ejs模版引擎的使用：
+- 1、npm install koa-views --save  
+- 2、npm install ejs --save
+- 3、var views = require('koa-views');
+app.use(views(__dirname,{extension:'ejs'}))
+- 4、await ctx.render('index');
+
+## Koa中post koa-bodyparser 中间件获取表单提交的数据
+- 1、安装   npm install --save koa-bodyparser
+- 2、引入  var bodyParser = require('koa-bodyparser')
+- 3、配置 post koa-bodyparser的中间件   app.use(bodyParser());  
+- 4、获取表单提交数据   ctx.request.body; 
+
+## Koa中 koa-static 静态资源中间件   静态web服务
+- 1、安装   npm install --save koa-static
+- 2、引入  var static = require('koa-static')
+- 3、配置中间件   app.use(static('static'));  
+
+## Koa中 art-template 模版引擎   
+- http://aui.github.io/art-template/koa/
+- http://aui.github.io/art-template/zh-cn/docs/syntax.html
+- 1、安装   npm install --save art-template
+-           npm install --save koa-art-template
+- 2、引入  var render = require('koa-art-template');
+- 3、配置 
+```  
+  render(app, {
+    root: path.join(__dirname, 'view'),  //视图的位置
+    extname: '.html',  //后缀名
+    debug: process.env.NODE_ENV !== 'production'   //是否开启调试模式
+ });
+ ```
+- 4、调试   await ctx.render('user');
+
+## cookie保存在浏览器客户端-是存储于访问者的计算机中的变量，可以让我们用同一个浏览器访问同一个域名的时候共享数据
+# cookie可以做什么：
+- 1、保存用户信息
+- 2、浏览器历史记录
+- 3、猜你喜欢的功能
+- 4、10天免登录
+- 5、 多个页面之间的数据传递
+- 6、cookie实现购物车功能
