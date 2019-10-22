@@ -5,7 +5,17 @@
         "productName": "深入浅出Node.js",
         "productInfo": "颜色：Node.js学习",
         "productPrice": 57.8,
-        "productCount": "3"
+        "productCount": "3",
+        "parts":[
+            {
+                "partsId":"10001",
+                "partsName":"封面"
+            },
+            {
+                "partsId":"10002",
+                "partsName":"封2"
+            }
+        ]
     },
     {
         "isSelected": true,
@@ -13,15 +23,26 @@
         "productName": "深入浅出Node.js2",
         "productInfo": "颜色：Node.js学习",
         "productPrice": 30,
-        "productCount": "1"
-    }
-    ,
+        "productCount": "1",
+        "parts":[
+            {
+                "partsId":"10001",
+                "partsName":"封面3"
+            }
+        ]
+    },
     {
         "isSelected": true,
         "productCover": "https://img10.360buyimg.com/cms/s80x80_jfs/t6094/107/710811867/382815/4d54717/592bf165N755a88f0.jpg",
         "productName": "深入浅出Node.js3",
         "productInfo": "颜色：Node.js学习",
         "productPrice": 30,
-        "productCount": "1"
+        "productCount": "1",
+        "parts":[
+            {
+                "partsId":"10001",
+                "partsName":"封面4"
+            }
+        ]
     }
 ]

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+    <meta charset="utf-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>计算属性</title>
+    <style>
+        html,body,h1,h2,h3,h4,h5,p,span,a,div,ol,ul,li,dl,dt,dd,table,tbody,tfoot,thead,tr,th,td,input,textarea, form,article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,img {margin: 0; padding: 0;}
+ul, li {list-style: none;}
+a{text-decoration: none;}
+.clearfix:after{display:block;clear:both;content:"";visibility:hidden;height:0;}
+.clearfix{zoom:1;}
+.addr-list ul li{ float: left; width: 200px; height: 130px; border:#f5f5f5 solid 1px; padding:20px; margin:20px; position: relative;}
+.addr-list ul li.check{ border:#f00 solid 1px;}
+.addr-list ul li .addr-opration{ position: absolute; right:20px; display: none;}
+.addr-list ul li.check .addr-opration{display: block;}
+.addr-list ul li .addr-edit{ top:20px;right:20px; color:green;}
+.addr-list ul li .addr-del{bottom:20px;right:20px; color:indianred;}
+.addr-list ul li .addr-set-default{bottom:20px;left:20px; color:gold;}
+.addr-list ul li .addr-default{ bottom:20px; left:20px; color:gold; display: block;}
+.shipping-method ul li{ float: left; width:200px; height: 60px; border:#f5f5f5 solid 1px;padding:20px; margin:20px;}
+.shipping-method ul li.check{border:#f00 solid 1px;}
+</style>
+
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="check-step">
+            <ul>
+                <li class="cur">地址确认</li>
+                <li>查看订单</li>
+                <li>支付</li>
+                <li>订单确认</li>
+            </ul>
+        </div>
+    </div>
+    <div class="addr-list-wrap clearfix">
+        <div class="addr-list">
+            <ul>
+                <li v-for="(item,index) in filterAddress" v-bind:class="{'check':index==currentIndex}" @click="currentIndex=index">
+                    <dl>
+                        <dt>{{item.userName}}</dt>
+                        <dd>{{item.streetName}}</dd>
+                        <dd>{{item.tel}}</dd>
+                    </dl>
+                    <div class="addr-opration addr-edit">
+                        <a>编辑</a>
+                    </div>
+                    <div class="addr-opration addr-del">
+                        <a>删除</a>
+                    </div>
+                    <div class="addr-opration addr-set-default" v-if="!item.isDefault" @click="setDefault(item.addressId)">
+                        <a>设为默认</a>
+                    </div>
+                    <div class="addr-opration addr-default" v-if="item.isDefault">默认地址</div>
+                </li>
+                <li class="addr-new">
+                    <div class="add-new-inner">
+                        <i class="icon-add"></i>
+                        <p>添加新地址</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="shipping-addr-more">
+        <!-- @click="loadMore"和@click="limitNum=addressList.length"一样的效果-->
+        <a class="addr-more-btn up-down-btn" @click="limitNum=addressList.length">
+            more
+            <i class="i-up-down">
+                <i class="i-up-down-l"></i>
+                <i class="i-up-down-r"></i>
+            </i>
+        </a>
+    </div>
+    <div class="shipping-method-wrap clearfix">
+        <div class="shipping-method">
+            <ul>
+                <li :class="{'check':shippingMethod==1}" @click="shippingMethod=1">
+                    <div class="name">标准配送</div>
+                    <div class="price">Free</div>
+                </li>
+                <li :class="{'check':shippingMethod==2}" @click="shippingMethod=2">
+                    <div class="name">高级配送</div>
+                    <div class="price">180</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<!--基于promise的-->
+<script src="node_modules/axios/dist/axios.js"></script>
+<script>
+let vm = new Vue({
+    el:'#app',
+    data:{
+        limitNum:3,
+        addressList:[],
+        currentIndex:0, //配送地址默认为0
+        shippingMethod:1
+    },
+    created(){//数据被初始化后会调用，this指向指的也是vm实例，钩子函数
+        this.getAddressList();
+    },
+    computed:{
+        filterAddress(){
+            return this.addressList.slice(0,this.limitNum);//slice(0,3)截取0到3的全新数组
+        }
+    },
+    methods:{
+        getAddressList(){   //初始化方法          
+            axios.get('./address.json').then(res=>{//success    
+                if(res.data.status==0){
+                    console.log(res.data);
+                    this.addressList = res.data.result; 
+                }
+            },err=>{//error
+                console.log(err);
+            });
+        },
+        loadMore(){
+            this.limitNum=this.addressList.length;
+        },
+        setDefault(_addressId){
+            this.addressList.forEach(function(address,index){//对当前选中地址的addressId进行遍历，找到对应那条addressId的地址进行操作
+                if(address.addressId==_addressId){
+                    address.isDefault = true;
+                }else{
+                    address.isDefault = false;
+                }
+            });
+        }
+        
+    }
+})
+</script>
+</body>
+</html>

@@ -30,11 +30,15 @@
                                v-model="product.isSelected"
                         >
                     </td>
-                    <td><img v-bind:src="product.productCover" :title="product.productName" alt="">{{product.productInfo}}</td>
+                    <td><img v-bind:src="product.productCover" :title="product.productName" alt="">{{product.productInfo}}<br/>
+                        赠送：<span v-for="part in product.parts">{{part.partsName}} </span>
+                    </td>
                     <td>{{product.productPrice}}</td>
                     <td>
+                        <a href="javascript:;" v-on:click="changeMoney(product,-1)">-</a>
                         <!--.number是让输入框的值变成数字类型  .lazy当输入框失去焦点时更新数据-->
                         <input type="number" v-model.number="product.productCount" min="1">
+                        <a href="javascript:;" @click="changeMoney(product,1)">+</a>
                     </td>
                     <td>
                         <!--过滤器 原数据不变的情况下，只是改变显示的效果 管道符-->
@@ -85,8 +89,8 @@ let vm = new Vue({
         // }
     },
     filters:{//可以有好多的自定义过滤器
-        toFixed(input,param1){  //这里的this指向的是windows  ,第1个参数input代表的是管道符前面的内容，第2个参数param1代表的是toFixed中传递的参数
-            return '￥'+input.toFixed(param1);
+        toFixed(value,param1){  //这里的this指向的是windows  ,第1个参数value代表的是管道符前面的内容，第2个参数param1代表的是toFixed中传递的参数
+            return '￥'+value.toFixed(param1) + '元';
         }
     },
     //专门用来发送ajax的方法
@@ -105,6 +109,17 @@ let vm = new Vue({
         },
         remove(p){//p代表的是当前点击的数组这一项 [ccc,eee,gtg,qq,p]
             this.products = this.products.filter(item=>item!==p);//把过滤后的数据赋值给数组    p和ccc相不相等，不等是true，true就留下，一个个比下去，发现p等不等于P,相等就取反，取反后为false,就不要这个了。
+        },
+        changeMoney(_product,way){//_product代表传的对应产品，way操作的方式，-1代表-，1代表+
+            if(way>0){
+                _product.productCount++;
+            }else{
+                _product.productCount--;
+                if(_product.productCount<0){
+                    _product.productCount=0
+                }
+            }
+
         }
     },
     data:{

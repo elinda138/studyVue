@@ -170,6 +170,19 @@ new Vue({
 ```
 <img :src="src" :width="w" />
 ```
+## Axios
+- Axios是一个基于于promise的HTTP库
+- 可以用于浏览器和node.js
+## Axios特性
+- 支持Promise API
+- 拦截请求和响应（请求头加授权信息等）
+- 转换请求数据和响应数据（请求时加密敏感信息，返回时解密）
+- 取消请求
+- 自动转换JSON数据（JSON.stringify()）
+- 客户端支持防御XSRF攻击
+- Axios基础用法（get,post,put等请求方法）
+- Axios进阶用法（实例，配置，拦截器，取消请求等）
+- Axios进一步封装，在项目中的实际应用
 
 ## 实现单页开发的方式
 - 通过hash记录跳转的路径（可以产生历史管理）（哈希值的好处是不会跳转刷新页面）
@@ -187,7 +200,7 @@ yarn add packagename --dev
 ```
 
 ## vue-cli
-- 下载一个全局生成vue项目的脚手架
+- 下载一个全局生成vue项目的脚手架  查版本号vue -V
 ```
 npm install vue-cli -g
 vue init webpack <项目名字>
@@ -196,6 +209,20 @@ npm install
 npm run dev
 npm install less less-loader axios vuex bootstrap --save-dev
 ```
+
+## vue-cli3.0
+- 卸载vue-cli2.0
+```
+npm uninstall -g vue-cli 
+```
+- 安装vue-cli3.0
+```
+npm uninstall -g @vue/cli 
+```
+vue create 项目名
+自己操作时，上下键，空格和回车为选择
+cd 项目名
+npm run serve/yarn serve
 
 
 ## 模块
@@ -278,7 +305,7 @@ npm install webpack-dev-server --save-dev
 cd xianmu
 clear
 npm init -y
-npm install webpack webpack-dev-server babel-core babel-loader babel-preset-es2015 babel-preset-stage-0 css-loader style-loader less less-loader file-loader url-loader html-webpack-plugin --save-dev
+npm install webpack webpack-dev-server webpack-cli babel-core babel-loader babel-preset-es2015 babel-preset-stage-0 css-loader style-loader less less-loader file-loader url-loader html-webpack-plugin --save-dev
 有可能要 npm install @babel/core babel-loader@7 --save-dev
 有可能要 npm install webpack-cli --save-dev
 ```
@@ -336,3 +363,122 @@ git remote add origin https://github.com/kong/springcloud.git
 
 
 ## uni-app一套代码可生成小程序，h5，安卓APP，IOS APP
+## HBuilderX uni-app wap2app MUI 5+Runtime
+
+## 快速启动一个静态文件服务器
+```
+npm install http-server -g  //全局安装
+http-server.cmd  //简写  hs -o    
+```
+
+## Mock
+- JSON文件的方式就是最简单的mock行为（缺点很明显）
+- 自己写一个简单的API接口（不一定会写）
+- 第三方工具
+  - mock.js（无法持久化数据）mockjs.com  http://mockjs.com/examples.html  https://github.com/nuysoft/Mock/wiki/Getting-Started
+  - json-server 提供一种零编码的方式在30秒之内完成一个REST API（讲真） https://github.com/typicode/json-server   http://jsonplaceholder.typicode.com/
+
+## RESTful
+- 面向资源（Resource）编程
+- 资源指的是一类数据（如电商：有用户，产品，订单，分类等类型的数据
+- 产品表 ->就是产品资源
+- 最重要的是如何表示一个资源
+- 地址即资源
+```
+http://api.demo.com/users   ->应该是所有的用户数据  
+http://api.demo.com/products
+http://api.demo.com/products/iphone  ->特指 iphone 这个商品
+http://api.demo.com/categories
+```
+- 对于资源我的的代码中可能的操作只有增删改查
+在 HTTP协议中对每一个请求URL都会有不同的调词GET(查、获取数据)/POST(增)/PUT(整体更新)/PATCH()/DELETE(删)
+
+## mock.js使用方法
+- 1.引入mock.js文件  mockJs
+- 2.引入过后全局对象上会多一个Mock对象
+- 3.Mock对象中最常用的就是mock方法
+```
+Mock.mock('/users','get',{
+   hello:'mock.js'
+})
+```
+## JSON Server
+JSON Server 中json文件中的每一个属性就是一个资源，最终会被JSON Server 管理
+https://github.com/typicode/json-server
+测试过程可以用Postman 测试
+```
+npm install -g json-server  安装
+json-server --watch **.json   启动
+```
+## JSON Server基本特性
+- 标准的RESTful API
+- 支持过滤    ?id=1&id=2
+- 支持分页    ?_limit=2 &_page=2
+- 支持排序
+- 支持全文检索   ?q=h
+- 支持关系
+- 支持数据分割
+- 支持操作符(大于小于)
+- 支持JSONP
+- 支持CORS
+- 中间件的方式可以自定义更多的特性
+## 参考资源
+- zce/dashboard -基于Vue.js的一个后台管理系统基本骨架，数据源使用的是json-server   地址：https://github.com/zce/dashboard   https://github.com/zce/dashboard-server
+- zce/api-server -我对json-server做了一些包装，增加了一些特性如（JWT）
+- 有可能存在的趋势无后端noBackend、severless
+
+## koa2
+```
+npm init yes
+npm install --save koa  --save参数，表示自动修改package.json 文件，自动添加依赖项
+npm install --save koa-router   koa路由：路由就是根据不同的url地址，加载不同的页面实现不同的功能。
+```
+- 中间件：匹配路由之前或者匹配路由完成做的一系列的操作。（ 功能：执行任何代码、修改请求和响应对象、终结请求-响应循环、调用堆栈中的下一个中间件)
+
+- 应用级中间件（匹配路由之前打印日期）
+- 路由级中间件（匹配到news路由后继续向下匹配路由）
+- 错误处理中间件
+- 第三方中间件
+
+- ejs模版引擎的使用：
+- 1、npm install koa-views --save  
+- 2、npm install ejs --save
+- 3、var views = require('koa-views');
+app.use(views(__dirname,{extension:'ejs'}))
+- 4、await ctx.render('index');
+
+## Koa中post koa-bodyparser 中间件获取表单提交的数据
+- 1、安装   npm install --save koa-bodyparser
+- 2、引入  var bodyParser = require('koa-bodyparser')
+- 3、配置 post koa-bodyparser的中间件   app.use(bodyParser());  
+- 4、获取表单提交数据   ctx.request.body; 
+
+## Koa中 koa-static 静态资源中间件   静态web服务
+- 1、安装   npm install --save koa-static
+- 2、引入  var static = require('koa-static')
+- 3、配置中间件   app.use(static('static'));  
+
+## Koa中 art-template 模版引擎   
+- http://aui.github.io/art-template/koa/
+- http://aui.github.io/art-template/zh-cn/docs/syntax.html
+- 1、安装   npm install --save art-template
+-           npm install --save koa-art-template
+- 2、引入  var render = require('koa-art-template');
+- 3、配置 
+```  
+  render(app, {
+    root: path.join(__dirname, 'view'),  //视图的位置
+    extname: '.html',  //后缀名
+    debug: process.env.NODE_ENV !== 'production'   //是否开启调试模式
+ });
+ ```
+- 4、调试   await ctx.render('user');
+
+## cookie保存在浏览器客户端-是存储于访问者的计算机中的变量，可以让我们用同一个浏览器访问同一个域名的时候共享数据
+# cookie可以做什么：
+- 1、保存用户信息
+- 2、浏览器历史记录
+- 3、猜你喜欢的功能
+- 4、10天免登录
+- 5、 多个页面之间的数据传递
+- 6、cookie实现购物车功能

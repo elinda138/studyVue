@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+    <meta charset="utf-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>计算属性</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <style>
+        .item-check-btn{ width:20px; height: 20px; display: inline-block; background: #666;}
+        .item-check-btn.check{
+            background: #f00;
+        }
+.pop{
+    display: none;
+    background: #fff;
+    position: fixed;
+    top:50%;
+	left: 50%;
+	width:540px;
+	height: 280px;
+	margin-left:-270px;
+	margin-top:-140px;
+    z-index: 1100;
+    border-radius:10px;
+}
+    .close{
+        width:24px; height: 24px;
+        background:#f00;
+        position: absolute;
+        right:30px;
+        top:30px;
+        z-index: 10;
+	}
+	.title{
+		height: 90px;
+		padding-left: 30px;
+		border-bottom:#E6E6E6 solid 1px;
+		line-height: 80px;
+	}
+	.txt{
+		color:#666666;
+		font-size: 24px;
+		line-height: 40px;
+		padding:20px 30px;
+	}
+	.btn{
+		padding-top:6px;
+		
+    }
+    .btn a{
+			text-align: right;
+			padding-right: 30px;
+			padding-left: 20px;
+			float: right;
+			font-size: 24px;
+		}
+
+.mask{
+    position: fixed; 
+    width: 100%; 
+    height: 100%; 
+    z-index: 1010; 
+    top: 0; 
+    left: 0; 
+    background-color: rgba(0,0,0,.5);
+}
+.show{display:block;}
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+         <!--每一行又会拥有12列-->
+        <div class="row">
+            <table class="table table-hover table-bordered">
+                <caption class="h2 text-warning text-center">购物车购物车</caption>
+                <tr>
+                    <!--v-model先将数据取出来，读取，改后就set-->
+                    <th>全选<span class="item-check-btn" v-bind:class="{'check':checkedAllFlag}" @click="checkedAll(true)"></span><span @click="checkedAll(false)">取消全选</span></th>
+                    <td>商品</td>
+                    <td>单价</td>
+                    <td>数量</td>
+                    <td>小计</td>
+                    <td>操作</td>
+                </tr>
+                <!--属性绑数据要用v-bind:属性或:属性 指令：动态绑定数据-->
+                <tr v-for="(product,index) in products">
+                    <td>
+                        <a href="javascript:;" class="item-check-btn" :class="{'check':product.checked}" @click=selectedProduct(product)></a>
+                    </td>
+                    <td><img v-bind:src="product.productCover" :title="product.productName" alt="">{{product.productInfo}}<br/>
+                        赠送：<span v-for="part in product.parts">{{part.partsName}} </span>
+                    </td>
+                    <td>{{product.productPrice}}</td>
+                    <td>
+                        <a href="javascript:;" v-on:click="changeMoney(product,-1)">-</a>
+                        <!--.number是让输入框的值变成数字类型  .lazy当输入框失去焦点时更新数据-->
+                        <input type="number" v-model.number="product.productCount" min="1">
+                        <a href="javascript:;" @click="changeMoney(product,1)">+</a>
+                    </td>
+                    <td>
+                        <!--过滤器 原数据不变的情况下，只是改变显示的效果 管道符-->
+                        <!-- {{(product.oductPrice*product.productCount).toFixed(2)}} -->
+                        {{product.productPrice*product.productCount | toFixed(2)}}
+                    </td>
+                    <td><button class="btn btn-danger" @click="delConfirm(product)">删除</button></td>
+                </tr>
+                <tr>
+                    <!--{{sum}} 是个计算属性-->
+                    <td colspan="5">总价格：{{totalMoney | toFixed(2)}}</td>
+                    <td><a class="btn btn-danger" href="2.8address.html">结账</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="pop" :class="{'show':delflag}">
+        <div class="close" @click="delflag=false"></div>
+        <div class="title">温馨提示</div>
+        <div class="txt">
+            您还未填写报名信息，请在个人中心完善个人资料，再选择课程报名！
+        </div>
+        <div class="btn"><a class="blue" @click="delProduct()">确定</a><a class="c_999 shut" @click="delflag=false">取消</a></div>
+    </div>
+    <div class="mask" v-if="delflag"></div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<!--基于promise的-->
+<script src="node_modules/axios/dist/axios.js"></script>
+<script>
+let vm = new Vue({
+    el:'#app',
+    filters:{//可以有好多的自定义过滤器
+        toFixed(value,param1){  //这里的this指向的是windows,第1个参数value代表的是管道符前面的内容，第2个参数param1代表的是toFixed中传递的参数
+            return '￥'+value.toFixed(param1) + '元';
+        }
+    },
+    //专门用来发送ajax的方法
+    created(){//数据被初始化后会调用，this指向指的也是vm实例，钩子函数
+        this.getData();
+    },
+    methods:{
+        getData(){   //初始化方法
+            //promise 解决回调问题的
+            axios.get('./carts.json').then(res=>{//success
+                console.log(res);
+                this.products = res.data;  //获取数据 需要的是res.data
+            },err=>{//error
+                console.log(err);
+            });
+        },
+        remove(p){//p代表的是当前点击的数组这一项 [ccc,eee,gtg,qq,p]
+            this.products = this.products.filter(item=>item!==p);//把过滤后的数据赋值给数组    p和ccc相不相等，不等是true，true就留下，一个个比下去，发现p等不等于P,相等就取反，取反后为false,就不要这个了。
+        },
+        changeMoney(item,way){//item代表传的对应产品，way操作的方式，-1代表-，1代表+
+            if(way>0){
+                item.productCount++;
+            }else{
+                item.productCount--;
+            }
+            this.calcTotalPrice();
+        },
+        selectedProduct(item){
+            //通过typeof判断item.checked是不是undefined来看这个item.checked存不存在，如果typeof item.checked == 'undefined'，说明item里面不存在checked属性
+            if(typeof item.checked == 'undefined'){
+                // Vue.set(item,"checked",true);//通过vue全局注册，往item对象的变量里注册一个checked属性，它的值为true，Vue.set用于监听一个不存在的变量
+                this.$set(item,"checked",true);//局部变量
+            }else{
+                item.checked = !item.checked;
+            }
+            this.calcTotalPrice();
+        },
+        checkedAll(flag){
+            this.checkedAllFlag=flag;
+            var _this =this;
+            this.products.forEach(function(item,index){//通过forEach来遍历商品列表
+                //判断这个item商品有没有注册到这个checked属性
+                if(typeof item.checked == 'undefined'){//没有的话就注册
+                    _this.$set(item,"checked",_this.checkedAllFlag);//局部变量
+                }else{//有注册就改为true
+                    item.checked = _this.checkedAllFlag;
+                }
+            });   
+            this.calcTotalPrice();
+        },
+        calcTotalPrice(){
+            var _this =this;
+            this.totalMoney=0;
+            this.products.forEach(function(item,index){//通过forEach来遍历商品列表
+                if(item.checked){//说明这个商品选中了
+                    _this.totalMoney +=item.productPrice * item.productCount; //+=多件商品时累加
+                }
+            });   
+        },
+        delConfirm(item){
+            this.delflag=true;
+            this.curProduct= item;
+        },
+        delProduct(){//删除应该把商品的id传到后台，告诉后台删除
+            var index =this.products.indexOf(this.curProduct);//通过indexOf搜索当前选中的产品找到他的索引
+            this.products.splice(index,1); //从当前索引开始删除，1为删除的个数
+            this.delflag=false;
+        }
+    },
+    data:{
+        products:[],
+        checkedAllFlag:false,
+        totalMoney:0,
+        delflag:false,
+        curProduct:''
+    }
+})
+</script>
+</body>
+</html>
