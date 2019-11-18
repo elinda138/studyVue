@@ -516,7 +516,7 @@ export default {
 ## Axios进一步封装，在项目中的实际应用
 # 没有封装之前
 ```javascript
-/**
+/*
 <template>
   <div class="home">
     <!-- 联系人列表 -->
@@ -635,7 +635,7 @@ export default {
   }
 }
 //</script>
-/**
+/*
 <style scoped>
 .van-contact-list_add{
   z-index: 0;
@@ -731,28 +731,27 @@ for(let key in service){//遍历service  key代表contactApi里的getContactList
         return response;  //返回请求的响应值
     }
     
-    // Http[key] = async function(){  //Http指向的是每一个请求方法，key指getContactList、newContactForm等 就是通过这个key可以直接调用请求方法了
-    //     await axios.get('url')   //await后面跟着异步函数这里就是axios请求   可申明一个变量来存放返回值
-    // }
-
-    //async 作用：避免进入回调地狱
-    // axios.get().then(res =>{ 
-    //     //一层一层的嵌套
-    //     axios.get().then(res=>{})
-    // }).catch(err=>{})
-
-    // Http[key] = async function(){
-    //     let res = await axios.get('url')
-    //     let res2 = await axios.get('url')//等待res执行之后才会执行res2的方法
-    // }
-    // Http[key] = async function(){
-    //     let res = null
-    //     try{
-    //         res = await axios.get('url')
-    //     }catch(err){
-    //         res = err
-    //     }
-    // }
+    /*
+    Http[key] = async function(){  //Http指向的是每一个请求方法，key指getContactList、newContactForm等 就是通过这个key可以直接调用请求方法了
+        await axios.get('url')   //await后面跟着异步函数这里就是axios请求   可申明一个变量来存放返回值
+    }
+    async 作用：避免进入回调地狱
+    axios.get().then(res =>{ 
+        //一层一层的嵌套
+        axios.get().then(res=>{})
+    }).catch(err=>{})
+    Http[key] = async function(){
+        let res = await axios.get('url')
+        let res2 = await axios.get('url')//等待res执行之后才会执行res2的方法
+    }
+    Http[key] = async function(){
+        let res = null
+        try{
+            res = await axios.get('url')
+        }catch(err){
+            res = err
+        }
+    }*/
 }
 //2、拦截器的添加
 //请求拦截器
@@ -809,13 +808,14 @@ Vue.prototype.$Http = Http   //把Http挂载到Vue实例上  全局
         }
       }else{
         //新建保存
-        //content-type:application/json
-        // let res = await this.$Http.newContactJson(info)
-        // if(res.code == 200){
-        //   Toast('保存成功')
-        //   this.showEdit = false
-        //   this.getList()//重新获取列表信息，刷新列表
-        // }
+        /*
+        content-type:application/json
+        let res = await this.$Http.newContactJson(info)
+        if(res.code == 200){
+          Toast('保存成功')
+          this.showEdit = false
+          this.getList()//重新获取列表信息，刷新列表
+        }*/
 
         //content-type:form-data
         let res = await this.$Http.newContactForm(info,true)
@@ -946,8 +946,10 @@ vue ui
 ```
 
 ```
-npm install css-loader style-loader less less-loader --save-dev  样式
+npm install css-loader style-loader less less-loader style-resources-loader --save-dev  样式
 npm i postcss-aspect-ratio-mini postcss-px-to-viewport postcss-write-svg postcss-cssnext postcss-viewport-units cssnano cssnano-preset-advanced postcss-import postcss-url --S 适配vw
+npm install --save axios
+npm i vant -S 或 npm install vant --save
 
 ```
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+    <title>todolist</title>
+    
+	
+</head>
+<body>
+<div>
+    <input type="text" id="input">
+    <button id="btn">提交</button>
+    <ul id="list"></ul>
+</div>
+<script src="jquery-1.9.1.min.js"></script>
+<script>
+    //M模型数据   V视图DOM   P控制器
+    // 创建Page构造函数
+    function Page(){}  
+    // 通过 $.extend对Page的prototype上增加内容
+    $.extend(Page.prototype,{
+        init:function(){
+            this.bindEvents();
+        },
+        bindEvents:function(){
+            var btn = $('#btn');
+            //$.proxy把handleBtnClick里的this永远绑定成这歌时候的this，也就是Page上的this
+            btn.on('click',$.proxy(this.handleBtnClick,this));
+        },
+        handleBtnClick:function(){
+            var inputElem = $("#input");
+            var inputValue = inputElem.val();
+            var ulElem = $("#list");
+            ulElem.append('<li>'+inputValue+'</li>');
+            inputElem.val('');
+        }
+    })
+    //创建page实例
+    var page = new Page();
+    //调用
+    page.init();
+</script>
+</body>
+</html>
