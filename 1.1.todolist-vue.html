@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- 聊天 -->
+	<meta charset="utf-8">
+	<title>helloworld</title>
+	
+</head>
+<body>
+<div id="root">
+    <div>
+        <input type="text" v-model="todoValue" />
+        <button @click="handleBtnClick">提交</button>
+    </div>
+    <!-- v-bind:content="item" 可省略为 :content="item" -->
+    <ul>
+        <todo-item 
+            v-bind:content="item" 
+            v-bind:index="index"
+            v-for="(item,index) in list"
+            @delete = "handleItemDelete">
+        </todo-item>
+    </ul>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //局部组件
+    var TodoItem ={   //对象
+        props:['content','index'],  //父组件向子组件传值
+        template:"<li @click='handleItemClick'>{{content}}</li>",
+        methods:{
+            handleItemClick:function(){
+                this.$emit("delete",this.index);  //$emit向父组件触发事件delete，this.index作为参数发给父组件
+            }
+        }
+    }
+    let vm = new Vue({ //vm==viewModel
+        el:'#root', 
+        components:{
+            TodoItem:TodoItem  //把局部组件注册到根实例
+        },
+        data:{   //data中的数据会被vm所代理
+            todoValue:"",
+            list:[]
+        },
+        methods:{
+            handleBtnClick:function(){
+                this.list.push(this.todoValue)
+                this.todoValue=""
+            },
+            handleItemDelete:function(index){
+                this.list.splice(index,1);
+            }
+        }
+    });
+
+
+    //全局组件
+    // Vue.component("TodoItem",{
+    //     props:['content'],  //父组件向子组件传值
+    //     template:"<li>{{content}}</li>"
+    // })
+    // let vm = new Vue({ //vm==viewModel
+    //     el:'#root', 
+    //     data:{   //data中的数据会被vm所代理
+    //         todoValue:"",
+    //         list:[]
+    //     },
+    //     methods:{
+    //         handleBtnClick:function(){
+    //             this.list.push(this.todoValue)
+    //             this.todoValue=""
+    //         }
+    //     }
+    // });
+    
+    
+</script>
+</body>
+</html>
