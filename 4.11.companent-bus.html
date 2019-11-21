@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>非父子组件间传值(Bus/总线/发布订阅模式/观察者模式)</title>
+</head>
+<body>
+<div id="app">
+    <child content="Dell"></child>
+    <child content="Lee"></child>
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    Vue.prototype.bus = new Vue()  //把 Vue.prototype挂载一个名字为bus的属性，这个属性指向Vue的实例。只要之后调用new Vue或创建组件的时候，每个组件都会有bus这个属性，因为每个组件或每个Vue的实例都是通过Vue类来创建的，而我在Vue类上挂载了一个bus的属性，所以每个通过Vue类创建的对象也就是Vue的实例上都会有bus的属性，都会指向同一个new Vue()Vue的实例。
+    Vue.component('child',{
+        props:{
+            content:String
+        },
+        data:function(){
+            return{
+                selfContent:this.content  //父组件的属性content拷贝，避免子组件直接操作父组件传递过来的值
+            }
+        },
+        template:'<div @click="handleClick">{{selfContent}}</div>',
+        methods:{
+            handleClick:function(){
+                this.bus.$emit('change',this.selfContent)   //向外触发change事件
+            }
+        },
+        mounted:function(){
+            var this_ = this;   //这个方法的this作用域发生了变化，要把这个this保存
+            this_.bus.$on('change',function(msg){//监听change事件
+                // alert(msg)
+                this_.selfContent = msg
+            })
+        }
+    });
+    let vm = new Vue({
+        el:'#app',         
+    })
+        
+</script>
+</body>
+</html>
