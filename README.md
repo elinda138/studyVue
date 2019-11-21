@@ -180,9 +180,666 @@ new Vue({
 - 取消请求
 - 自动转换JSON数据（JSON.stringify()）
 - 客户端支持防御XSRF攻击
-- Axios基础用法（get,post,put等请求方法）
-- Axios进阶用法（实例，配置，拦截器，取消请求等）
-- Axios进一步封装，在项目中的实际应用
+## Axios基础用法（get,post,put等请求方法）
+- axios请求方法：get\(post\put\patch)\delete
+- get:获取数据
+- post:提交数据（表单提交，文件上传）新建
+- put:更新编辑数据（所有的数据都推送到服务端即后端）更新
+- patch:更新编辑数据(只将修改的数据推送到后端)数据量大就可以用patch
+- delete:删除数据
+```javascript
+    // http://localhost:8081/data.json?id=12
+    //第一种方法
+    axios.get('/data.json',{
+        params:{
+            id:12
+        }
+    }).then((res)=>{
+      console.log(res);
+    })
+    //第二种方法
+    axios({
+        method:'get',
+        url:'/data.json',
+        params:{
+            id:12
+        }
+    }).then((res)=>{
+      console.log(res);
+    })
+    //post-提交数据
+    //form-data  表单提交（图片上传和文件上传）
+    //application/json
+    let data={
+        id:12
+    }
+    axios.post('/post',data).then(res=>{
+        console.log(res);
+    })
+    axios({
+        method:'post',
+        url:'/post',
+        data:data
+    }).then(res=>{
+        console.log(res);
+    })
+    //form-data请求
+    let formData = new FormData()
+    for(let key in data){
+        formData.append(key,data[key])
+    }
+    axios.post('/post',formData).then(res=>{
+        console.log(res);
+    })
+
+    //put-更新编辑数据（所有的数据都推送到服务端即后端）更新
+    axios.put('/put',data).then(res=>{
+        console.log(res);
+    })
+    //patch-更新编辑数据(只将修改的数据推送到后端)数据量大就可以用patch
+    axios.patch('/patch',data).then(res=>{
+        console.log(res);
+    })
+    axios.patch('/patch',formData).then(res=>{
+        console.log(res);
+    })
+
+    //delete 请求   
+    //delete?id=12
+    axios.delete('/delete',{
+        params:{
+            id:12
+        }
+    }).then(res=>{
+        console.log(res);
+    })
+    //delete-删除数据
+    axios.delete('/delete',{
+        data:{
+            id:12
+        }
+    }).then(res=>{
+        console.log(res);
+    })
+
+    axios({
+        method:'delete',
+        url:'/delete',
+        params:{},
+        data:{}
+    }).then(res=>{
+        console.log(res);
+    })
+
+  ```
+  # 并发请求，同时进行多个请求，并统一处理返回值
+  - axios.all()——参数是数组   
+  - axios.spread()——axios.all()的多个请求完成后，把返回的数据进行分割处理，对每个返回值进行统一的处理   分割不同请求的返回值
+  ```javascript
+    axios.all([
+        axios.get('/data.json'),
+        axios.get('/city.json')
+    ]).then(
+        axios.spread((dataRes,cityRes)=>{
+            console.log(dataRes,cityRes)
+        })
+    )
+  ```
+## Axios进阶用法（实例，配置，拦截器，取消请求等）
+# axios实例
+- 数组创建的两种方式：let arr=[] 或 let arr=new Array()
+- 后端接口地址有多个，并且超时时长不一样，所以可以创建实例，在实例中配置参数，然后在去请求
+```javascript
+import axios from 'axios'
+export default {
+  name: 'axios3-1',
+  created(){
+    let instance = axios.create({
+      baseURL:'http://localhost:8081',
+      timeout:1000  //设置超时时长
+    })
+    let axios2 = axios.create({
+      baseURL:'http://localhost:9090',
+      timeout:2000  
+    })
+    instance.get('/data.json').then(res=>{
+      console.log(res)
+    })
+    axios2.get('/city.json').then(res=>{
+      console.log(res)
+    })
+  },
+}
+```
+# axios配置参数都有哪些
+```javascript
+import axios from 'axios'
+import { request } from 'http'
+export default {
+  name: 'axios3-2',
+  created(){
+    axios.create({
+      baseURL:'http://localhost:8080',  //请求的域名的基本地址
+      timeout:1000, //请求超时时长需要后端提供参考依据
+      url:'/data.json', //请求路径
+      method:'get,post,put,patch,delete',  //请求方法
+      headers:{
+        token:''
+      },//请求头
+      params:{},//请求参数拼接在url上
+      data:{},//请求参数放在请求体里
+    })
+  
+    //1.axios全局配置  ---defaults指向axios库的默认配置
+    axios.defaults.timeout = 1000
+    axios.defaults.baseURL = 'http://localhost:8080'
+    //2.axios实例配置
+    let instance =axios.create()  //申明一个实例
+    instance.defaults.timeout = 3000
+    //3.axios请求配置
+    instance.get('/data.json',{
+      timeout:5000
+    })
+
+    //实际开发 （全局配置比较少用到）
+    //以有两种请求接口为例：
+    //http:localhost:9090
+    //http:localhost:9091
+    let instance = axios.create({
+      baseURL:'http://localhost:9090',  
+      timeout:1000
+    })
+    let instance1 = axios.create({
+      baseURL:'http://localhost:9091',  
+      timeout:3000
+    })
+    //baseURL,timeout,url,method,params
+    instance.get('/contactList',{
+      params:{}
+    }).then((res)=>{
+      console.log(res)
+    })
+    //baseURL,timeout,url,method
+    instance1.get('/orderList',{
+      timeout:5000
+    }).then((res)=>{
+      console.log(res)
+    })
+    
+  },
+}
+```
+# 拦截器：在请求或响应被处理前拦截它们（在发起请求前做一些处理，请求回来后端响应后做一些处理）
+- 请求拦截器  axios.interceptors.request.use
+- 响应拦截器  axios.interceptors.response.use
+- 取消拦截器  axios.interceptors.request.eject
+```javascript
+import axios from 'axios'
+export default {
+  name: 'axios3-3',
+  created(){
+    //请求拦截器
+    //use(请求前的回调函数，请求错误的回调函数)
+    axios.interceptors.request.use(
+      config=>{
+        //在发送请求前做些什么
+        return config
+      },err=>{
+        //在请求错误的时候做些什么
+        return Promise.reject(err)
+      }
+    )
+    //响应拦截器
+    axios.interceptors.response.use(
+      res=>{
+        //请求成功对响应数据做处理
+        return res  //这个res会到axios.get().then(res=>{})这里面的then的res
+      },err => {
+        //响应错误做些什么   （  请求没到后端返回404     到了后端后响应的错误返回500  ）
+        return Promise.reject(err)  //这个err会到axios.get().then().catch(err=>{})这里的catch的err
+      }
+    )
+    //取消拦截器（了解）
+    let interceptors = axios.interceptors.request.use(
+      config =>{
+        config.headers={
+          auth:true
+        }
+        return config
+      }
+    )//申明一个实例变量把拦截器存放起来。
+    axios.interceptors.request.eject(interceptors)//取消这个拦截器
+
+    //例子 登录状态（token:'')  需要登录的接口
+    let instance = axios.create({})
+    instance.interceptors,request.use(config=>{
+      config.headers.token =''  //给headers设置token，赋值一个字符串
+      return config
+    })//发送请求时需要添加headers.token，headers.token会自动追加请求拦截器，不需要手动追加。
+    //不需要登录的接口
+    let newinstance = axios.create({})
+    
+    //移动端开发
+    let instance_phone = axios.create({})
+    instance_phone.interceptors.request.use(config=>{
+      $('#modal').show()//弹窗
+      return config
+    })//请求前显示等待弹窗
+    instance_phone.interceptors.response.use(res=>{
+      $('#modal').hide()//弹窗
+      return res
+    })//请求成功响应后隐藏等待弹窗
+  },
+}
+```
+# 错误处理：请求错误时进行的处理
+```javascript
+import axios from 'axios'
+export default {
+  name: 'axios3-4',
+  created(){
+    axios.interceptors.request.use(
+      config=>{
+        //在发送请求前做些什么
+        return config
+      },err=>{
+        //在请求错误的时候做些什么
+        return Promise.reject(err)
+      }
+    )
+    axios.interceptors.response.use(
+      res=>{
+        //请求成功对响应数据做处理
+        return res  //这个res会到axios.get().then(res=>{})这里面的then的res
+      },err => {
+        //响应错误做些什么   （请求没到后端返回404      到了后端后响应的错误返回500 ）
+        return Promise.reject(err)  //这个err会到axios.get().then().catch(err=>{})这里的catch的err
+      }
+    )
+    axios.get('/data.json').then((res)=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    })
+
+    //例子：实际开发过程中，一般要添加统一的错误处理
+    let instance = axios.create({})
+    instance.interceptors.request.use(config=>{
+      return config
+    },err=>{
+      //请求错误 一般http状态码以4开头，常见：401超时，404 没找到
+      $('#modal').show()  //请求错误的弹窗
+      setTimeout(()=>{
+        $('#modal').hide()
+      },2000)
+      return Promise.reject(err)
+    })
+    instance.interceptors.response.use(res=>{
+      return res
+    },err=>{
+      //响应错误处理 一般http状态码以5开头，常见：500系统错误 502系统重启
+      $('#modal').show()  //响应错误的弹窗
+      setTimeout(()=>{
+        $('#modal').hide()
+      },2000)
+      return Promise.reject(err)
+    })
+    //如果说不需要做错误的特殊处理，直接这个就可以了。如果还需要更特殊的错误处理，就在加上.catch(err=>{})
+    instance.get('/data.json').then(res=>{
+      console.log(res)
+    })
+
+  },
+}
+```
+# 取消请求：用于取消正在进行的http请求（了解）
+- 什么情况下可能用到取消请求
+- 后台-数据操作，增删改查、大批量查询如3-5秒还没有查询到时就可能用到取消请求
+```javascript
+import axios from 'axios'
+export default {
+  name: 'axios3-5',
+  created(){
+    let source = axios.CancelToken.source()  //申明一个含有CancelToken.source()的变量
+    axios.get('/data.json',{
+      cancelToken:source.token   //把token放到请求参数cancelToken的source里
+    }).then(res=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    })
+    //取消请求(message可选)
+    source.cancel('cancel http')
+  },
+}
+```
+## Axios进一步封装，在项目中的实际应用
+# 没有封装之前
+```javascript
+/*
+<template>
+  <div class="home">
+    <!-- 联系人列表 -->
+    <van-contact-list
+      :list="list"
+      @add="onAdd"
+      @edit="onEdit"
+    />
+    <!-- 联系人编辑 -->
+    <van-popup v-model="showEdit" position="bottom">
+      <van-contact-edit
+        :contact-info="editingContact"  
+        :is-edit="isEdit"
+        @save="onSave"
+        @delete="onDelete"
+      />
+    </van-popup>
+  </div>
+</template>
+*/
+
+//<script>
+import axios from 'axios'
+import { ContactList,Toast,ContactEdit,Popup } from 'vant';
+export default {
+  name: 'contactList',
+  components: {
+    [ContactList.name]:ContactList,   //在template里面使用的才要注册组件
+    [ContactEdit.name]:ContactEdit,
+    [Popup.name]:Popup
+  },
+  data(){
+    return{
+      // {
+      //   id:1,
+      //   name:'',
+      //   tel:''
+      // }
+      list:[],
+      instance:null,//axios实例
+      showEdit:false,//编辑弹窗的显隐
+      editingContact:{},//正在编辑的联系人数据
+      isEdit:false,//控制新建或编辑 false为新建，true为编辑
+    }
+  },
+  created(){
+    this.instance = axios.create({
+      baseURL:'http://localhost:9000/api',
+      timeout:1000  //默认就是1000
+    })
+    //获取联系人列表
+    this.getList()
+    
+  },
+  methods:{
+    //获取联系人列表
+    getList(){
+      this.instance.get('/contactList').then((res)=>{
+        this.list = res.data.data
+      }).catch(err=>{
+        Toast('请求失败，请稍后重试')
+      })  
+    },
+    //添加联系人
+    onAdd(){
+      this.showEdit = true
+      this.isEdit =false
+    },
+    //编辑联系人  需要传正在编辑的对象info
+    onEdit(info){
+      this.showEdit = true
+      this.isEdit = true
+      this.editingContact = info
+    },
+    //保存联系人
+    onSave(info){
+      if(this.isEdit){
+        //编辑保存
+        this.instance.put('/contact/edit',info).then(res=>{
+          if(res.data.code == 200){
+            Toast('保存成功')
+            this.showEdit = false
+            this.getList()//重新获取列表信息，刷新列表
+          }
+        })
+      }else{
+        //新建保存
+        this.instance.post('/contact/new/json',info).then(res=>{
+          if(res.data.code == 200){
+            Toast('保存成功')
+            this.showEdit = false
+            this.getList()//重新获取列表信息，刷新列表
+          }
+        }).catch(()=>{
+          Toast('请求失败，请稍后重试')
+        })
+      }
+
+    },
+    //删除联系人
+    onDelete(info){
+      this.instance.delete('/contact',{
+        params:{
+          id:info.id
+        }
+      }).then(res=>{
+        if(res.data.code == 200){
+          Toast('删除成功')
+          this.showEdit = false
+          this.getList()//重新获取列表信息，刷新列表
+        }
+      }).catch(()=>{
+        Toast('请求失败，请稍后重试')
+      })
+    },
+  }
+}
+//</script>
+/*
+<style scoped>
+.van-contact-list_add{
+  z-index: 0;
+}
+.van-popup{
+  height: 100%;
+}
+</style>
+*/
+```
+# 1、创建contactApi.js
+```javascript
+const CONTACT_API = {
+    //获取联系人列表
+    getContactList:{
+        method:'get',
+        url:'/contactList'
+    },
+    //新建联系人 form-data
+    newContactForm:{
+        method:"post",
+        url:"/contact/new/form"
+    },
+    //新建联系人 application/json
+    newContactJson:{
+        method:"post",
+        url:"/contact/new/json"
+    },
+    //编辑联系人
+    editContact:{
+        method:'put',
+        url:'/contact/edit'
+    },
+    //删除联系人
+    delContact:{
+        method:'delete',
+        url:'/contact'
+    },
+}
+export default CONTACT_API
+```
+# 2、创建http.js
+```javascript
+import axios from 'axios'
+import service from './contactApi';
+import {Toast} from 'vant'
+let instance = axios.create({
+    baseURL:"http://localhost:9000/api",
+    timeout:1000
+})
+//service 循环遍历出不同的请求方法
+const Http = {} //Http对象的作用：用来包裹请求方法的容器  对contactApi中service进行遍历，生成不同的请求方法，把请求方法和它对应的key放在这个对象里面
+
+//1、请求格式/参数的统一
+for(let key in service){//遍历service  key代表contactApi里的getContactList、newContactForm等
+    let api= service[key];  //url method
+
+    //async 作用：避免进入回调地狱
+    Http[key] = async function(
+        params,  //请求参数get:url,put,post,patch(data),delete:url
+        isFormData=false,  //标识是否是form-data请求
+        config={} //配置参数
+    ){
+        // let  url = api.url  //拿到这个url
+        let newParams = {}  //newParams用于判断是否为FormData请求，如果不是FormData那newParams就是params。如果是FormData请求就要把params装换成FormData对象
+
+        //content-type是否是form-data的判断
+        if(params && isFormData){
+            newParams = new FormData()  //创建一个FormData格式的对象
+            for(let key in params){  //遍历对象params
+                newParams.append(key,params[key])
+            }
+        }else{
+            newParams = params
+        }
+
+        //不同请求方式的判断
+        let response = {}; //请求的返回值
+        if(api.method === 'put' || api.method ==="post" || api.method === 'patch'){
+            try{
+                response = await instance[api.method](api.url,newParams,config)
+            }catch(err){
+                response = err
+            } 
+        }else if(api.method === 'delete' || api.method === 'get'){
+            config.params = newParams
+            try{
+                response = await instance[api.method](api.url,config)
+            }catch(err){
+                response = err
+            } 
+        }
+        return response;  //返回请求的响应值
+    }
+    
+    /*
+    Http[key] = async function(){  //Http指向的是每一个请求方法，key指getContactList、newContactForm等 就是通过这个key可以直接调用请求方法了
+        await axios.get('url')   //await后面跟着异步函数这里就是axios请求   可申明一个变量来存放返回值
+    }
+    async 作用：避免进入回调地狱
+    axios.get().then(res =>{ 
+        //一层一层的嵌套
+        axios.get().then(res=>{})
+    }).catch(err=>{})
+    Http[key] = async function(){
+        let res = await axios.get('url')
+        let res2 = await axios.get('url')//等待res执行之后才会执行res2的方法
+    }
+    Http[key] = async function(){
+        let res = null
+        try{
+            res = await axios.get('url')
+        }catch(err){
+            res = err
+        }
+    }*/
+}
+//2、拦截器的添加
+//请求拦截器
+instance.interceptors.request.use(config =>{
+    //发起请求前做些什么(弹窗提示，loading)
+    Toast.loading({
+        mask:false,
+        duration:0,   //0为一直存在
+        forbidClick:true,  //禁止点击
+        message:'加载中...'
+    })
+    return config
+},() =>{
+    //请求错误
+    Toast.clear()
+    Toast('请求错误，请稍后重试')
+})
+//响应拦截器
+instance.interceptors.response.use(res =>{
+    //响应请求成功
+    Toast.clear()
+    return res.data
+},() =>{
+    //响应失败
+    Toast.clear()
+    Toast('请求错误，请稍后重试')
+})
+
+export default Http
+```
+# 3、封装之后main.js 
+```javascript
+import Http from './service/http'   //引入
+Vue.prototype.$Http = Http   //把Http挂载到Vue实例上  全局
+```
+# 4、封装之后页面调用js
+```javascript
+   //获取联系人列表
+    async getList(){
+      let res = await this.$Http.getContactList();
+      // console.log(res)
+      this.list = res.data
+      console.log(res)
+    },
+    //保存联系人
+    async onSave(info){
+      if(this.isEdit){
+        //编辑保存
+        let res = await this.$Http.editContact(info)
+        if(res.code === 200){
+          Toast('保存成功')
+          this.showEdit = false
+          this.getList()//重新获取列表信息，刷新列表
+        }
+      }else{
+        //新建保存
+        /*
+        content-type:application/json
+        let res = await this.$Http.newContactJson(info)
+        if(res.code == 200){
+          Toast('保存成功')
+          this.showEdit = false
+          this.getList()//重新获取列表信息，刷新列表
+        }*/
+
+        //content-type:form-data
+        let res = await this.$Http.newContactForm(info,true)
+        if(res.code == 200){
+          Toast('保存成功')
+          this.showEdit = false
+          this.getList()//重新获取列表信息，刷新列表
+        }
+      }
+    },
+    //删除联系人
+    async onDelete(info){
+      let res = await this.$Http.delContact(
+        {
+          id:info.id
+        }
+      )
+      if(res.code === 200){
+        Toast('删除成功')
+        this.showEdit = false
+        this.getList()//重新获取列表信息，刷新列表
+      }
+    },
+```
 
 ## 实现单页开发的方式
 - 通过hash记录跳转的路径（可以产生历史管理）（哈希值的好处是不会跳转刷新页面）
@@ -210,7 +867,7 @@ npm run dev
 npm install less less-loader axios vuex bootstrap --save-dev
 ```
 
-## vue-cli3.0
+## vue-cli3.0脚手架搭建
 - 卸载vue-cli2.0
 ```
 npm uninstall -g vue-cli 
@@ -220,9 +877,82 @@ npm uninstall -g vue-cli
 npm uninstall -g @vue/cli 
 ```
 vue create 项目名
-自己操作时，上下键，空格和回车为选择
 cd 项目名
 npm run serve/yarn serve
+地址：https://cli.vuejs.org/zh/guide/
+# 提示：node 版本要 8.9+
+# 安装步骤：
+- 两种方式：
+- (1) npm install -g @vue/cli
+- (2) yarn global add @vue/cli
+- 安装完成之后检查 vue --version/ vue -V 检查版本
+- npm install -g @vue/cli-service-global
+- 创建项目
+- vue create hello-world // 项目名称
+- 1.终端：（上下键选择）回车
+default (bable，eslint） // 默认
+Manually select features // 手动 **选择手动创建项目
+- 2.终端：（上下键移动键，空格键是否选中）回车
+? Please pick a preset: Manually select features
+? Check the features needed for your project:
+(* ) Babel
+( ) TypeScript // 语法
+( ) Progressive Web App (PWA) Support // PWA
+(* ) Router // 路由
+(* ) Vuex // store
+(* ) CSS Pre-processors // 预编译
+(* ) Linter / Formatter // 格式化代码
+( ) Unit Testing
+( ) E2E Testing
+//提示： Babel, Router, Vuex, CSS Pre-processors, Linter 选中
+
+- 3.终端：
+? Please pick a preset: Manually select features // 手动创建项目
+? Check the features needed for your project: Babel, Router, Vuex, CSS Pre-processors, Linter
+? Use history mode for router? (Requires proper server setup for index fallback in production) Yes
+//在生产中需要适当的服务器设置用于索引回退
+? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported by default): Sass/SCSS
+// css 预编译
+? Pick a linter / formatter config: Prettier // (ESLint + Prettier)格式化程序配置
+? Pick additional lint features: Lint on save // 保存即检查格式
+? Where do you prefer placing config for Babel, PostCSS, ESLint, etc.? In dedicated config files
+// 其他配置数据单独存放再一个配置文件内
+? Save this as a preset for future projects? Yes
+// 是否保存这个项目的配置
+? Save preset as: SaveVue3.0
+// 是的话 项目命名假设为：SaveVue3.0
+
+- 4.使用图形化界面
+vue ui
+图形化数据
+- 5.yarn serve 启动项目
+- 6.yarn build 打包项目
+（4，5，6 不可同时执行）
+## vscode 代码vue3.0检测设置
+- vscode 加载插件 ESLint 代码检测工具  (文件 ~ 首选项 ~ 设置 ~ 工作区)
+```
+{
+"editor.formatOnSave": false,
+"eslint.autoFixOnSave": true,
+"eslint.validate": [
+"javascript",{
+"language": "vue",
+"autoFix": true
+},
+"html",
+"vue"
+]
+}
+```
+
+```
+npm install css-loader style-loader less less-loader style-resources-loader --save-dev  样式
+npm i postcss-aspect-ratio-mini postcss-px-to-viewport postcss-write-svg postcss-cssnext postcss-viewport-units cssnano cssnano-preset-advanced postcss-import postcss-url --S 适配vw
+npm install --save axios
+npm i vant -S 或 npm install vant --save
+
+```
+
 
 
 ## 模块
@@ -264,7 +994,7 @@ npm install babel-preset-stage-0 --save-dev
 ## 解析样式
 - css-loader将css解析成模块，将解析的内容插入到style标签内（）
 ```
-npm install css-loader style-loader --save-dev
+npm install css-loader style-loader less less-loader --save-dev
 ```
 ## less,sass,stylus(预处理语言)
 - less-loader less
@@ -480,5 +1210,8 @@ app.use(views(__dirname,{extension:'ejs'}))
 - 2、浏览器历史记录
 - 3、猜你喜欢的功能
 - 4、10天免登录
-- 5、 多个页面之间的数据传递
+- 5、多个页面之间的数据传递
 - 6、cookie实现购物车功能
+
+## session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而session保存在服务器上。
+# session的工作流程：当浏览器方问服务器并发送一次请求时，服务器端会创建一个session对象，生成一个类似于key，value的键值对，然后将key(cookie)返回到浏览器（客户）端，浏览器下次在访问时，携带key(cookie),找到对应的session(value).客户信息都保存在session中

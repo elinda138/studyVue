@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <title>Vue中css动画原理(transition过渡)</title>
+    <style>
+        /* .v-enter{
+            opacity: 0;
+        }
+        .v-enter-active{
+            transition: opacity 3s;
+        }
+        .v-leave-to{
+            opacity: 0;
+        }
+        .v-leave-active{
+            transition: opacity 3s;
+        } */
+        .v-enter,.v-leave-to{
+            opacity: 0;
+        }
+        .v-enter-active,.v-leave-active{
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <transition><div v-show="show">hello world</div></transition>
+    <button @click="handleClick">切换</button>
+</div>
+
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app', 
+        data:{
+            show:true
+        },
+        methods:{
+            handleClick:function(){
+                this.show= !this.show
+            }
+        }        
+    })
+        
+</script>
+</body>
+</html>
