@@ -1084,6 +1084,20 @@ git remote add origin https://github.com/kong/springcloud.git
 - 6. 把本地项目推送到远程仓库
   git push -u origin master (初次推送要加 -u 后面在推送就不用了)
 
+- 分支 
+  git pull  拉取分支(后会显示拉到的新分支  如*[new branch] index-swiper -> origin/index-swiper)
+  git checkout index-swiper
+  git add .
+  git commit -m 'change'
+  git push  把本地的index-swiper提交到了线上的index-swiper
+  git checkout master   切换到master
+  git merge origin/index-swiper    把线上新增的index-swiper合并到本地的master
+  git push   把本地的master提交到线上master
+
+  
+
+  
+
 ## 转json JSON.stringify()
 
 ## Browsersync
