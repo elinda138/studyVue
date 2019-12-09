@@ -1091,8 +1091,14 @@ git remote add origin https://github.com/kong/springcloud.git
   git commit -m 'change'
   git push  把本地的index-swiper提交到了线上的index-swiper
   git checkout master   切换到master
-  git merge origin/index-swiper    把线上新增的index-swiper合并到本地的master
+  git merge index-swiper    把线上新增的index-swiper合并到本地的master
   git push   把本地的master提交到线上master
+
+- 当前分支与其它分支合并
+  git merge 其它分支
+
+- 去除本次更改
+  git checkout.
 
   
 
@@ -1229,3 +1235,57 @@ app.use(views(__dirname,{extension:'ejs'}))
 
 ## session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而session保存在服务器上。
 # session的工作流程：当浏览器方问服务器并发送一次请求时，服务器端会创建一个session对象，生成一个类似于key，value的键值对，然后将key(cookie)返回到浏览器（客户）端，浏览器下次在访问时，携带key(cookie),找到对应的session(value).客户信息都保存在session中
+
+## 安装nvm
+- nvm-windows下载 下载地址https://github.com/coreybutler/nvm-windows/releases，下载nvm-setup.zip
+
+- 安装nvm
+　　首先把nvm-setup.zip解压到比如E:/dev/nvm 中(其它盘也可以)；然后以管理员的身份运行nvm-setup . 选择nvm安装目录为E:\dev\nvm，node安装目录为 E:\dev\nodejs,修改settings.txt的内容为：
+```
+root: E:\dev\nvm
+path: E:\dev\nodejs
+arch: 64
+proxy: none
+node_mirror: http://npm.taobao.org/mirrors/node/
+npm_mirror: https://npm.taobao.org/mirrors/npm/
+```
+- 配置nvm环境变量 （我的电脑-属性-高级系统设置-环境变量）
+```
+NVM_HOME:E:\dev\nvm
+NVM_SYMLINK:E:\dev\nodejs
+PATH:%NVM_HOME%;%NVM_SYMLINK%（path已存【%NVM_HOME%;%NVM_SYMLINK%】在添加到最后）
+```
+- 通过nvm安装node
+```
+nvm -v // 查看nvm版本
+nvm install 8.12.0 // 下载指定版本 nvm install latest安装最新版本
+nvm use 8.12.0 // 使用指定版本
+nvm ls // 查看已经安装的nodejs版本
+node -v // 查看nodejs版本
+```
+## npm换成cnpm
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+## nvm命令行
+- nvm nvm list 是查找本电脑上所有的node版本
+- nvm list 查看已经安装的版本
+- nvm list installed 查看已经安装的版本
+- nvm list available 查看网络可以安装的版本
+- nvm install version 安装指定版本
+- nvm use version 切换使用指定的版本node
+- nvm ls 列出所有安装的版本
+- nvm current显示当前版本
+- nvm alias ## 给不同的版本号添加别名
+- nvm unalias ## 删除已定义的别名
+- nvm reinstall-packages ## 在当前版本node环境下，重新全局安装指定版本号的npm包
+- nvm on 打开nodejs控制
+- nvm off 关闭nodejs控制
+- nvm proxy 查看设置与代理
+- nvm node_mirror [url] 设置或者查看setting.txt中的node_mirror，如果不设置的默认是 https://nodejs.org/dist/
+- nvm npm_mirror [url] 设置或者查看setting.txt中的npm_mirror,如果不设置的话默认的是： https://github.com/npm/npm/archive/.
+- nvm uninstall 卸载制定的版本
+- nvm use [version] [arch] 切换制定的node版本和位数
+- nvm root [path] 设置和查看root路径
+- nvm version 查看当前的版本
+
