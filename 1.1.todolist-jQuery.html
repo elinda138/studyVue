@@ -25,7 +25,7 @@
         },
         bindEvents:function(){
             var btn = $('#btn');
-            //$.proxy把handleBtnClick里的this永远绑定成这歌时候的this，也就是Page上的this
+            //$.proxy把handleBtnClick里的this永远绑定成这个时候的this，也就是page上
             btn.on('click',$.proxy(this.handleBtnClick,this));
         },
         handleBtnClick:function(){
