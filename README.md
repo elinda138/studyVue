@@ -1086,6 +1086,41 @@ git remote add origin https://github.com/kong/springcloud.git
 
 ## 转json JSON.stringify()
 
+## 安装nvm
+- 1、首先把nvm-setup.zip解压到比如E:/dev/nvm 中(其它盘也可以)；然后以管理员的身份运行nvm-setup . 选择nvm安装目录为E:\dev\nvm，node安装目录为 E:\dev\nodejs,修改settings.txt的内容为：
+```
+root: E:\dev\nvm
+path: E:\dev\nodejs
+arch: 64
+proxy: none
+node_mirror: http://npm.taobao.org/mirrors/node/
+npm_mirror: https://npm.taobao.org/mirrors/npm/
+```
+- 2、修改nvm环境变量 我的电脑->属性->高级系统设置->环境变量，在用户变量中添加环境变量：
+NVM_HOME:E:\dev\nvm
+NVM_SYMLINK:E:\dev\nodejs
+PATH:%NVM_HOME%;%NVM_SYMLINK%（%NVM_HOME%;%NVM_SYMLINK%添加到已存path最后）
+- 3、 E:\dev\目录下新建文件夹nodejs
+- 4、 通过nvm安装node
+```
+nvm -v // 查看nvm版本
+nvm install 10.15.3 // 下载指定版本     nvm install latest安装最新版本
+nvm use 8.12.0 // 使用指定版本
+nvm ls // 查看已经安装的nodejs版本
+node -v // 查看nodejs版本
+```
+- 5、 安装全局npm
+```
+npm config set prefix "E:\dev\nvm\npm"//配置用npm下载包时全局安装的包路径
+npm install npm -g --registry=https://registry.npm.taobao.org //安装全局npm,不同的node都使用这个npm，想更新全局的npm的话首先删除全局路径(就是上一行命令的地址,可以使用npm config ls查看)下的npm,再执行一次这个命令即可
+在用户变量中添加 NPM_HOME=E:\dev\nvm\npm，path最后中添加%NPM_HOME%
+```
+- 6、 一些替代npm的方式
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org //使用淘宝镜像cnmp替代npm
+npm install -g yarn//使用yarn替代npm
+```
+
 ## Browsersync
 - （全局安装）npm install -g browser-sync
 - （本地安装）npm install browser-sync --save-dev
